@@ -1,3 +1,4 @@
+//Auteur : Raphael De Oliveira
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QPlainTextEdit>

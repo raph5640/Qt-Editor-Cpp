@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1177</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pageFichier">
        <layout class="QGridLayout" name="gridLayout">
@@ -36,7 +36,7 @@
         <item>
          <widget class="QLabel" name="label_credit">
           <property name="text">
-           <string>                                                        Cet editeur de text a été développé par Raphael De Oliveira</string>
+           <string>                                                                                                                  Cet editeur de text a été développé par Raphael De Oliveira</string>
           </property>
          </widget>
         </item>
@@ -47,7 +47,7 @@
     <item>
      <widget class="QLabel" name="label_editorcpp">
       <property name="text">
-       <string>                                                                                                                                                                      Editor C++ (by Raphael De Oliveira)</string>
+       <string>                                                                                                                                                                                                                                                                                     Editor C++ (by Raphael De Oliveira)</string>
       </property>
      </widget>
     </item>
@@ -58,7 +58,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1177</width>
      <height>23</height>
     </rect>
    </property>

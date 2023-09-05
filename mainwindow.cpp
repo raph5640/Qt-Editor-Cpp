@@ -1,3 +1,4 @@
+//Auteur : Raphael De Oliveira
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
@@ -158,7 +159,7 @@ void MainWindow::sauvegarde_fichier(int index) {
                 tabName.chop(1);
                 ui->tabWidgetFichier->setTabText(index, tabName);
             }
-            QMessageBox::information(this, tr("Succés"), tr("Sauvegarde du fichier reussi avec succés."));
+            QMessageBox::information(this, tr("Succés"), tr("Sauvegarde du fichier %1 reussi avec succés.").arg(tabName));
         } else {
             QMessageBox::warning(this, tr("Erreur"), tr("Impossible de sauvegarder le fichier."));
         }
