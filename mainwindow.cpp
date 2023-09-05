@@ -204,18 +204,18 @@ void MainWindow::updateCursor(){
 void MainWindow::chercherText(){
     qDebug()<<"Vous faites une recherche de text dans votre editeur";
     QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
+    editor->moveCursor(QTextCursor::Start);
     if(!editor) {
         return;
     }
+    qDebug() << editor->toPlainText();
     QString text = QInputDialog::getText(this, tr("Recherche"), tr("Entrez le texte à rechercher:"));
     if(text.isEmpty()) {
         return;
     }
-
     QTextCursor found = editor->document()->find(text, editor->textCursor(), QTextDocument::FindWholeWords);
-
     if(found.isNull()) {
-        QMessageBox::information(this, tr("Recherche"), tr("Votre texte %1 n'a pas été trouvé").arg(text));
+        QMessageBox::warning(this, tr("Recherche"), tr("Votre texte %1 n'a pas été trouvé").arg(text));
     } else {
         editor->setTextCursor(found);
     }
@@ -223,6 +223,7 @@ void MainWindow::chercherText(){
 
 void MainWindow::remplacerText(){
     QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
+    editor->moveCursor(QTextCursor::Start);
     if(!editor) {
         return;
     }
@@ -242,7 +243,6 @@ void MainWindow::remplacerText(){
 
     //Cherche la première occurrence
     QTextCursor found = editor->document()->find(rechercheText, currentCursor, drapeau);
-
     while(!found.isNull()) {
         found.insertText(replaceText);
         found = editor->document()->find(rechercheText, found, drapeau);
