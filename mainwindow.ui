@@ -72,14 +72,14 @@
     <property name="title">
      <string>&amp;Fichier</string>
     </property>
-    <addaction name="actionEditer_les_fichiers_ouverts"/>
-    <addaction name="separator"/>
+    <addaction name="actionAjouter_fichier_txt"/>
     <addaction name="actionAfficher_les_fichiers_recents"/>
+    <addaction name="separator"/>
+    <addaction name="actionSauvegarder"/>
     <addaction name="actionChercher_du_texte"/>
     <addaction name="action_Remplacer"/>
     <addaction name="separator"/>
-    <addaction name="actionAjouter_fichier_txt"/>
-    <addaction name="actionSauvegarder"/>
+    <addaction name="actionEditer_les_fichiers_ouverts"/>
    </widget>
    <addaction name="menuLecture"/>
    <addaction name="menuEdition"/>
