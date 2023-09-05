@@ -1,7 +1,8 @@
 # QtProjectCpp
 C++ editor with Qt5
 Author : @raph5640 Raphael De Oliveira
-##Short-Cuts
+
+## Short-Cuts
 
 Ctrl+A : Ajouter un nouveau fichier a l'espace de travail
 Ctrl+S : Sauvegarder le fichier en cours de modification
