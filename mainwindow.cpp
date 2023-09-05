@@ -11,8 +11,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //Initialisation
     init_Connections();
+    init_shortcut();
+
     ui->stackedWidget->setCurrentIndex(0);
+
+    ui->actionChercher_du_texte->setEnabled(false);
+    ui->action_Remplacer->setEnabled(false);
+    ui->actionSauvegarder->setEnabled(false);
     //ajouterFichierMenu();
 }
 
@@ -31,12 +38,25 @@ void MainWindow::init_Connections(){
     connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);             //Connection la croix de fermeture "x" avec le slot close_onglet
     connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);  //Connection permettant de revenir a l'espace de travail
     connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);           //Connection pour la sauvegarde de fichier
-    connect(ui->actionChercher_du_texte, &QAction::triggered, this, &MainWindow::chercherText);
+    connect(ui->actionChercher_du_texte, &QAction::triggered, this, &MainWindow::chercherText);                 //Connection pour recherche du text dans l'editeur (Ctrl+F)
+    connect(ui->action_Remplacer, &QAction::triggered, this,&MainWindow::remplacerText);
+}
+/**
+ * @brief Initialisation les short-cut pour les actions de l'interface.
+ * @return void
+ * @param void
+ */
+void MainWindow::init_shortcut(){
     ui->actionSauvegarder->setShortcut(QKeySequence("Ctrl+S"));
     ui->actionAjouter_fichier_txt->setShortcut(QKeySequence("Ctrl+A"));
     ui->actionChercher_du_texte->setShortcut(QKeySequence("Ctrl+F"));
+    ui->action_Remplacer->setShortcut(QKeySequence("Ctrl+R"));
 }
-
+/**
+ * @brief Ajoute un nouveau fichier a l'espace de travail en ouvrant le repertoire
+ * @return void
+ * @param void
+ */
 void MainWindow::ajouterFichierMenu(){
     qDebug()<<"lecture fichier menu";
     ui->stackedWidget->setCurrentIndex(0);
@@ -61,6 +81,10 @@ void MainWindow::ajouterFichierMenu(){
             editor->setPlainText(contenu_fichier);
             ui->tabWidgetFichier->addTab(editor, QFileInfo(nom_fichier).fileName());
             ui->tabWidgetFichier->setTabsClosable(true);
+            //Activer les actions "Chercher" et "Remplacer"
+            ui->actionChercher_du_texte->setEnabled(true);
+            ui->action_Remplacer->setEnabled(true);
+            ui->actionSauvegarder->setEnabled(true);
         }
         else{
             qDebug()<<"Erreur d'ouverture du fichier";
@@ -81,7 +105,13 @@ void MainWindow::editerFichierMenu(){
     ui->stackedWidget->setCurrentIndex(0);
 }
 
+/**
+ * @brief Sauvegarde le fichier contenu dans l'index donné en parametre
+ * @return void
+ * @param int index
+ */
 void MainWindow::sauvegarde_fichier(int index) {
+    qDebug()<<"Vous faites une sauvegarde du fichier en cours de modifications";
     if (index >= 0 && index < liste_fichier_ouvert.size()) {
         QFile *fichier = liste_fichier_ouvert.at(index);
         QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->widget(index));
@@ -103,7 +133,11 @@ void MainWindow::sauvegarde_fichier(int index) {
     }
 }
 
-
+/**
+ * @brief Fermeture de l'onglet si le fichier est en cours de modification on propose de sauvegarder ou de revenir en arriere (Cancel)
+ * @return void
+ * @param int index
+ */
 void MainWindow::close_onglet(int index){
     QWidget *widget = ui->tabWidgetFichier->widget(index);
     if(ui->tabWidgetFichier->tabText(index).endsWith("*")) {
@@ -150,4 +184,35 @@ void MainWindow::chercherText(){
     } else {
         editor->setTextCursor(found);
     }
+}
+
+void MainWindow::remplacerText(){
+    QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
+    if(!editor) {
+        return;
+    }
+    //Creation de la boite pour la recherche du text a remplacer
+    QInputDialog *boiteDialog = new QInputDialog(this);
+    boiteDialog->setOptions(QInputDialog::UsePlainTextEditForTextInput);
+    QString rechercheText = QInputDialog::getText(this, tr("Recherche"), tr("Texte à chercher "));
+    QString replaceText = QInputDialog::getText(this, tr("Remplacement"), tr("Remplacer %1 par ").arg(rechercheText));
+
+    //On vérifie que l'on a bien rentré du texte dans les deux boites de dialogues
+    if(rechercheText.isEmpty() || replaceText.isEmpty()) {
+        return;
+    }
+
+    // Remplacement
+    QTextCursor cursor = editor->textCursor();
+    cursor.beginEditBlock();
+    QTextCursor foundtext = editor->document()->find(rechercheText, cursor);
+    while(!foundtext.isNull()) {
+        int position = foundtext.position();  //Sauvegarder la position actuelle du curseur
+        foundtext.insertText(replaceText);  //Remplacer le texte
+        cursor.setPosition(position + replaceText.length());  //Mettre à jour la position du curseur
+        foundtext = editor->document()->find(rechercheText, cursor);  //Chercher la prochaine occurrence
+    }
+    cursor.endEditBlock();
+
+    qDebug()<<"Fini remplacement";
 }

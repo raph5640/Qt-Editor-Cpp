@@ -74,6 +74,7 @@
     </property>
     <addaction name="actionEditer_les_fichiers_ouverts"/>
     <addaction name="actionChercher_du_texte"/>
+    <addaction name="action_Remplacer"/>
     <addaction name="separator"/>
     <addaction name="actionAjouter_fichier_txt"/>
     <addaction name="actionSauvegarder"/>
@@ -94,7 +95,7 @@
   </action>
   <action name="actionAjouter_fichier_txt">
    <property name="text">
-    <string>&amp;Ajouter fichier .txt</string>
+    <string>Ajouter fichier .txt</string>
    </property>
   </action>
   <action name="actionEditer_les_fichiers_ouverts">
@@ -104,12 +105,17 @@
   </action>
   <action name="actionSauvegarder">
    <property name="text">
-    <string>&amp;Sauvegarder</string>
+    <string>Sauvegarder</string>
    </property>
   </action>
   <action name="actionChercher_du_texte">
    <property name="text">
     <string>Chercher du texte</string>
+   </property>
+  </action>
+  <action name="action_Remplacer">
+   <property name="text">
+    <string>Remplacer</string>
    </property>
   </action>
  </widget>

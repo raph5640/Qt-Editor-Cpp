@@ -33,6 +33,7 @@ private:
     Ui::MainWindow *ui;
     QList<QFile*> liste_fichier_ouvert;
     void init_Connections();
+    void init_shortcut();
     void close_onglet(int index);
     void sauvegarde_fichier(int index);
 
@@ -43,5 +44,6 @@ private slots:
     void sauvegarderFichierActuel();
     void updateCursor();
     void chercherText();
+    void remplacerText();
 };
 #endif // MAINWINDOW_H
