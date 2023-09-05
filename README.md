@@ -1,4 +1,5 @@
 # QtProjectCpp
 C++ editor with Qt5
 Author : @raph5640 Raphael De Oliveira
-![EditorC-](https://github.com/raph5640/QtProjectCpp/assets/140059828/f7b61597-264b-4b44-ba92-3fe3fb65cfc7)
+![EditorC- (1)](https://github.com/raph5640/QtProjectCpp/assets/140059828/1b8c08aa-3f44-418a-8eda-02dc18df4b69)
+
