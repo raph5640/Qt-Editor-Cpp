@@ -12,19 +12,24 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
     editor_settings = new QSettings("Organisation", "EditorC++", this);
-    //Initialisation
     init_Connections();
     init_shortcut();
-
     ui->stackedWidget->setCurrentIndex(0);
 
     ui->actionChercher_du_texte->setEnabled(false);
     ui->action_Remplacer->setEnabled(false);
     ui->actionSauvegarder->setEnabled(false);
-    //ajouterFichierMenu();
+
+    for (int i = 0; i < MaxRecentFiles; ++i) {
+        QAction *action = new QAction(this);
+        action->setVisible(false);
+        connect(action, &QAction::triggered, this, &MainWindow::ouvrirFichierRecent);
+        ui->menuFichiers_recent->addAction(action);
+        recentFileActs.append(action);
+    }
+    updateFichierRecent();
 }
 
 MainWindow::~MainWindow()
@@ -38,14 +43,17 @@ MainWindow::~MainWindow()
  * @param void
  */
 void MainWindow::init_Connections(){
-    connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ajouterFichierMenu);         //Connection ajouter un fichier
+    connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ouvrirFichierMenu);         //Connection ajouter un fichier
     connect(ui->actionCredit_de_fichier_txt, &QAction::triggered, this, &MainWindow::creditFichierMenu);        //Connection crédit menu action
     connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);             //Connection la croix de fermeture "x" avec le slot close_onglet
     connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);  //Connection permettant de revenir a l'espace de travail
     connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);           //Connection pour la sauvegarde de fichier
     connect(ui->actionChercher_du_texte, &QAction::triggered, this, &MainWindow::chercherText);                 //Connection pour recherche du text dans l'editeur (Ctrl+F)
     connect(ui->action_Remplacer, &QAction::triggered, this,&MainWindow::remplacerText);
-    connect(ui->actionAfficher_les_fichiers_recents, &QAction::triggered,this , &MainWindow::afficherFichiersRecents);
+    for (QAction *action : recentFileActs) {                                            //J'initialise toutes les actions correspondant a chacun des fichiers recents afin de pouvoir les ouvrir via le menu
+        connect(action, &QAction::triggered, this, &MainWindow::ouvrirFichierRecent);
+    }
+    connect(ui->actionOpen_des_fichiers, &QAction::triggered, this, &MainWindow::ouvrirToutFichierRecent);
 }
 /**
  * @brief Initialisation les short-cut pour les actions de l'interface.
@@ -63,7 +71,7 @@ void MainWindow::init_shortcut(){
  * @return void
  * @param void
  */
-void MainWindow::ajouterFichierMenu(){
+void MainWindow::ouvrirFichierMenu(){
     qDebug()<<"lecture fichier menu";
     ui->stackedWidget->setCurrentIndex(0);
     QString nom_fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), "", tr("Tous les fichiers (*)"));
@@ -101,8 +109,8 @@ void MainWindow::ajouterFichierMenu(){
         Fichier_recent.prepend(nom_fichier);
         while (Fichier_recent.size() > 10)
             Fichier_recent.removeLast();
-
         editor_settings->setValue("Fichier recent", Fichier_recent);
+        updateFichierRecent();
     }
 }
 
@@ -235,13 +243,66 @@ void MainWindow::remplacerText(){
     qDebug()<<"Fini remplacement";
 }
 
-void MainWindow::afficherFichiersRecents(){
-    QStringList fichiersRecents = editor_settings->value("Fichier recent").toStringList();
+void MainWindow::updateFichierRecent() {
+    QStringList recentFiles = editor_settings->value("Fichier recent").toStringList();
+    int numRecentFiles = qMin(recentFiles.size(), MaxRecentFiles);
 
-    QString message = "Fichiers récemment ouverts :\n";
-    for (const QString& fichier : fichiersRecents) {
-        message += fichier + "\n";
+    for (int i = 0; i < numRecentFiles; ++i) {
+        QString text = tr("&%1 %2").arg(i + 1).arg(QFileInfo(recentFiles[i]).fileName());
+        recentFileActs[i]->setText(text);
+        recentFileActs[i]->setData(recentFiles[i]);
+        recentFileActs[i]->setVisible(true);
+    }
+    for (int j = numRecentFiles; j < MaxRecentFiles; ++j)
+        recentFileActs[j]->setVisible(false);
+}
+
+void MainWindow::ouvrirFichierRecent() {
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action) {
+        QString fileName = action->data().toString();
+        ajouterFichierMenuText(fileName);
+    }
+}
+void MainWindow::ajouterFichierMenuText(const QString &fileName) {
+    if (fileName.isEmpty()) return;
+
+    //Vérifie si le fichier est déjà ouvert
+    for (int i = 0; i < liste_fichier_ouvert.size(); ++i) {
+        if (liste_fichier_ouvert[i]->fileName() == fileName) {
+            ui->tabWidgetFichier->setCurrentIndex(i);
+            return;
+        }
     }
 
-    QMessageBox::information(this, "Fichiers récents", message);
+    QFile *fichier = new QFile(fileName);
+    if (fichier->open(QIODevice::ReadOnly)) {
+        QTextStream in(fichier);
+        QString contenu_fichier = in.readAll();
+        fichier->close();
+
+        this->liste_fichier_ouvert.append(fichier);
+
+        QPlainTextEdit *editor = new QPlainTextEdit;
+        connect(editor, &QPlainTextEdit::textChanged, this, [this, editor]() {
+            int index = ui->tabWidgetFichier->indexOf(editor);
+            if (!ui->tabWidgetFichier->tabText(index).endsWith("*")) {
+                ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index) + "*");
+            }
+        });
+
+        connect(editor, &QPlainTextEdit::cursorPositionChanged, this, &MainWindow::updateCursor);
+        editor->setPlainText(contenu_fichier);
+        ui->tabWidgetFichier->addTab(editor, QFileInfo(fileName).fileName());
+        ui->tabWidgetFichier->setTabsClosable(true);
+
+        // Activer les actions "Chercher" et "Remplacer"
+        ui->actionChercher_du_texte->setEnabled(true);
+        ui->action_Remplacer->setEnabled(true);
+        ui->actionSauvegarder->setEnabled(true);
+    } else {
+        qDebug() << "Erreur d'ouverture du fichier";
+    }
 }
+
+void MainWindow::ouvrirToutFichierRecent(){}

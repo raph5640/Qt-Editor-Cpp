@@ -72,8 +72,15 @@
     <property name="title">
      <string>&amp;Fichier</string>
     </property>
+    <widget class="QMenu" name="menuFichiers_recent">
+     <property name="title">
+      <string>Fichiers recent</string>
+     </property>
+     <addaction name="actionOpen_des_fichiers"/>
+     <addaction name="separator"/>
+    </widget>
     <addaction name="actionAjouter_fichier_txt"/>
-    <addaction name="actionAfficher_les_fichiers_recents"/>
+    <addaction name="menuFichiers_recent"/>
     <addaction name="separator"/>
     <addaction name="actionSauvegarder"/>
     <addaction name="actionChercher_du_texte"/>
@@ -120,9 +127,9 @@
     <string>Remplacer</string>
    </property>
   </action>
-  <action name="actionAfficher_les_fichiers_recents">
+  <action name="actionOpen_des_fichiers">
    <property name="text">
-    <string>Fichiers recent</string>
+    <string>Tout ouvrir</string>
    </property>
   </action>
  </widget>

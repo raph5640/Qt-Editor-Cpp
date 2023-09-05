@@ -31,22 +31,29 @@ public:
     ~MainWindow();
 
 private:
+    //Mes attributs privé
     Ui::MainWindow *ui;
     QList<QFile*> liste_fichier_ouvert;
     QSettings *editor_settings;
+    QList<QAction *> recentFileActs;
+    const int MaxRecentFiles = 10;
+    //Quelques methodes
     void init_Connections();
     void init_shortcut();
     void close_onglet(int index);
     void sauvegarde_fichier(int index);
 
 private slots:
-    void ajouterFichierMenu();
+    void ouvrirFichierMenu();
+    void ajouterFichierMenuText(const QString &fileName = "");
+    void ouvrirToutFichierRecent();
     void creditFichierMenu();
     void editerFichierMenu();
     void sauvegarderFichierActuel();
     void updateCursor();
     void chercherText();
     void remplacerText();
-    void afficherFichiersRecents();
+    void updateFichierRecent();
+    void ouvrirFichierRecent();
 };
 #endif // MAINWINDOW_H
