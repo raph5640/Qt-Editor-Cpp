@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     init_Connections();
+    ui->stackedWidget->setCurrentIndex(0);
     //ajouterFichierMenu();
 }
 
@@ -20,8 +21,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::init_Connections(){
     connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ajouterFichierMenu);
-    connect(ui->actionEcriture_de_fichier_txt, &QAction::triggered, this, &MainWindow::ecritureFichierMenu);
+    connect(ui->actionCredit_de_fichier_txt, &QAction::triggered, this, &MainWindow::creditFichierMenu);
     connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);
+    connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);
 }
 
 void MainWindow::ajouterFichierMenu(){
@@ -48,11 +50,15 @@ void MainWindow::ajouterFichierMenu(){
     }
 }
 
-void MainWindow::ecritureFichierMenu(){
-    qDebug()<<"ecriture fichier menu";
+void MainWindow::creditFichierMenu(){
+    qDebug()<<"Crédit fichier menu";
     ui->stackedWidget->setCurrentIndex(1);
 }
 
+void MainWindow::editerFichierMenu(){
+    qDebug()<<"Editer les fichiers ouverts menu";
+    ui->stackedWidget->setCurrentIndex(0);
+}
 void MainWindow::close_onglet(int index){
     QWidget *widget = ui->tabWidgetFichier->widget(index);
     ui->tabWidgetFichier->removeTab(index);

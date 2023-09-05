@@ -18,7 +18,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pageFichier">
        <layout class="QGridLayout" name="gridLayout">
@@ -36,12 +36,9 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Text Edit</string>
+           <string>                                                        Cet editeur de text a été développé par Raphael De Oliveira</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <widget class="QTextEdit" name="textEditEcriture"/>
         </item>
        </layout>
       </widget>
@@ -65,20 +62,22 @@
      <height>23</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuEcriture">
+   <widget class="QMenu" name="menuEdition">
     <property name="title">
      <string>Edition</string>
     </property>
-    <addaction name="actionEcriture_de_fichier_txt"/>
+    <addaction name="actionCredit_de_fichier_txt"/>
    </widget>
    <widget class="QMenu" name="menuLecture">
     <property name="title">
      <string>Fichier</string>
     </property>
+    <addaction name="actionEditer_les_fichiers_ouverts"/>
+    <addaction name="separator"/>
     <addaction name="actionAjouter_fichier_txt"/>
    </widget>
    <addaction name="menuLecture"/>
-   <addaction name="menuEcriture"/>
+   <addaction name="menuEdition"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionLecture_de_fichier_txt">
@@ -86,14 +85,19 @@
     <string>Lecture de fichier .txt</string>
    </property>
   </action>
-  <action name="actionEcriture_de_fichier_txt">
+  <action name="actionCredit_de_fichier_txt">
    <property name="text">
-    <string>Ecriture de fichier .txt</string>
+    <string>Crédit</string>
    </property>
   </action>
   <action name="actionAjouter_fichier_txt">
    <property name="text">
     <string>Ajouter fichier .txt</string>
+   </property>
+  </action>
+  <action name="actionEditer_les_fichiers_ouverts">
+   <property name="text">
+    <string>Editer les fichiers ouverts</string>
    </property>
   </action>
  </widget>

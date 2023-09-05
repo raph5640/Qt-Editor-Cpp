@@ -22,6 +22,7 @@ private:
 
 private slots:
     void ajouterFichierMenu();
-    void ecritureFichierMenu();
+    void creditFichierMenu();
+    void editerFichierMenu();
 };
 #endif // MAINWINDOW_H
