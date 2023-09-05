@@ -20,10 +20,10 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="page">
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QTabWidget" name="tabWidget">
+      <widget class="QWidget" name="pageFichier">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QTabWidget" name="tabWidgetFichier">
           <property name="currentIndex">
            <number>-1</number>
           </property>
@@ -31,18 +31,27 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_2">
-       <widget class="QTextEdit" name="textEdit">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>10</y>
-          <width>631</width>
-          <height>391</height>
-         </rect>
-        </property>
-       </widget>
+      <widget class="QWidget" name="page_Ecriture">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Text Edit</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="textEditEcriture"/>
+        </item>
+       </layout>
       </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>                                                                                   Editor C++ (by Raphael De Oliveira)</string>
+      </property>
      </widget>
     </item>
    </layout>
@@ -66,7 +75,7 @@
     <property name="title">
      <string>Fichier</string>
     </property>
-    <addaction name="actionLecture_fichier_txt"/>
+    <addaction name="actionAjouter_fichier_txt"/>
    </widget>
    <addaction name="menuLecture"/>
    <addaction name="menuEcriture"/>
@@ -82,7 +91,7 @@
     <string>Ecriture de fichier .txt</string>
    </property>
   </action>
-  <action name="actionLecture_fichier_txt">
+  <action name="actionAjouter_fichier_txt">
    <property name="text">
     <string>Ajouter fichier .txt</string>
    </property>

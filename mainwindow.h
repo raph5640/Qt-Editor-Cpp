@@ -18,10 +18,10 @@ public:
 private:
     Ui::MainWindow *ui;
     void init_Connections();
-    void closeTab(int index);
+    void close_onglet(int index);
 
 private slots:
-    void lectureFichierMenu();
+    void ajouterFichierMenu();
     void ecritureFichierMenu();
 };
 #endif // MAINWINDOW_H

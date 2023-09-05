@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     init_Connections();
-    lectureFichierMenu();
+    //ajouterFichierMenu();
 }
 
 MainWindow::~MainWindow()
@@ -19,11 +19,11 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::init_Connections(){
-    connect(ui->actionLecture_fichier_txt, &QAction::triggered, this, &MainWindow::lectureFichierMenu);
+    connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ajouterFichierMenu);
     connect(ui->actionEcriture_de_fichier_txt, &QAction::triggered, this, &MainWindow::ecritureFichierMenu);
 }
 
-void MainWindow::lectureFichierMenu(){
+void MainWindow::ajouterFichierMenu(){
     qDebug()<<"lecture fichier menu";
     ui->stackedWidget->setCurrentIndex(0);
     QString nom_fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), "", tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
@@ -38,10 +38,10 @@ void MainWindow::lectureFichierMenu(){
             QPlainTextEdit *editor = new QPlainTextEdit;
             editor->setPlainText(contenu_fichier);
 
-            ui->tabWidget->addTab(editor, QFileInfo(nom_fichier).fileName());
-            ui->tabWidget->setTabsClosable(true);
+            ui->tabWidgetFichier->addTab(editor, QFileInfo(nom_fichier).fileName());
+            ui->tabWidgetFichier->setTabsClosable(true);
 
-            connect(ui->tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
+            connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);
         }
         else{
             qDebug()<<"Erreur d'ouverture du fichier";
@@ -54,8 +54,8 @@ void MainWindow::ecritureFichierMenu(){
     ui->stackedWidget->setCurrentIndex(1);
 }
 
-void MainWindow::closeTab(int index){
-    QWidget *widget = ui->tabWidget->widget(index);
-    ui->tabWidget->removeTab(index);
+void MainWindow::close_onglet(int index){
+    QWidget *widget = ui->tabWidgetFichier->widget(index);
+    ui->tabWidgetFichier->removeTab(index);
     delete widget;  // Libération de la mémoire
 }
