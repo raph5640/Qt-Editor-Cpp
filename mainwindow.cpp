@@ -4,6 +4,7 @@
 #include <QString>
 #include <QFileDialog>
 #include <QPlainTextEdit>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -37,11 +38,12 @@ void MainWindow::ajouterFichierMenu(){
     QString nom_fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), "", tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
 
     if (!nom_fichier.isEmpty()){
-        QFile fichier(nom_fichier);
-        if (fichier.open(QIODevice::ReadOnly)){
-            QTextStream in(&fichier);
+        QFile *fichier = new QFile(nom_fichier);
+        if (fichier->open(QIODevice::ReadOnly)){
+            QTextStream in(fichier);
             QString contenu_fichier = in.readAll();
-            fichier.close();
+            this->liste_fichier_ouvert.append(fichier);
+            fichier->close();
 
             QPlainTextEdit *editor = new QPlainTextEdit;
             //ICI J'ECRIS UNE FONDCTION LAMBDA QUI CAPTURE LES VARIABLES this, editor POUR VERIFIER QUE LE FICHIER EST MODIFIER OU NON ET ECRIRE * DANS LE STACK WIDGET
@@ -70,8 +72,45 @@ void MainWindow::editerFichierMenu(){
     qDebug()<<"Editer les fichiers ouverts menu";
     ui->stackedWidget->setCurrentIndex(0);
 }
+
+void MainWindow::sauvegarde_fichier(int index) {
+    if (index >= 0 && index < liste_fichier_ouvert.size()) {
+        QFile *fichier = liste_fichier_ouvert.at(index);
+        QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->widget(index));
+        if (editor && fichier->open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream out(fichier);
+            out << editor->toPlainText();
+            fichier->close();
+
+            // Supprimer le marqueur de modification (*)
+            QString tabName = ui->tabWidgetFichier->tabText(index);
+            if(tabName.endsWith("*")) {
+                tabName.chop(1);
+                ui->tabWidgetFichier->setTabText(index, tabName);
+            }
+            QMessageBox::information(this, tr("Succés"), tr("Sauvegarde du fichier reussi avec succés."));
+        } else {
+            QMessageBox::warning(this, tr("Erreur"), tr("Impossible de sauvegarder le fichier."));
+        }
+    }
+}
+
+
 void MainWindow::close_onglet(int index){
     QWidget *widget = ui->tabWidgetFichier->widget(index);
+    // Vérifier si l'onglet est marqué comme modifié
+    if(ui->tabWidgetFichier->tabText(index).endsWith("*")) {
+        QMessageBox::StandardButton reponse;
+        reponse = QMessageBox::question(this, "Fichier non sauvegardé","Le fichier a été modifié. Voulez-vous sauvegarder les modifications?",QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
+
+        if(reponse == QMessageBox::Yes) {
+            this->sauvegarde_fichier(index);
+            // Appeler une fonction pour sauvegarder le fichier, si nécessaire.
+        } else if(reponse == QMessageBox::Cancel) {
+            return;
+        }
+    }
     ui->tabWidgetFichier->removeTab(index);
+    delete liste_fichier_ouvert.takeAt(index);  // Deletes the QFile from heap and removes it from the list
     delete widget;  // Libération de la mémoire
 }

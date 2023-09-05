@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 #include <QPlainTextEdit>
 #include <QMainWindow>
+#include <QList>
+#include <QFile>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,8 +31,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QList<QFile*> liste_fichier_ouvert;
     void init_Connections();
     void close_onglet(int index);
+    void sauvegarde_fichier(int index);
 
 private slots:
     void ajouterFichierMenu();
