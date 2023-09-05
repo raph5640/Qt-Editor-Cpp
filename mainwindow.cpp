@@ -21,6 +21,7 @@ MainWindow::~MainWindow()
 void MainWindow::init_Connections(){
     connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ajouterFichierMenu);
     connect(ui->actionEcriture_de_fichier_txt, &QAction::triggered, this, &MainWindow::ecritureFichierMenu);
+    connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);
 }
 
 void MainWindow::ajouterFichierMenu(){
@@ -40,8 +41,6 @@ void MainWindow::ajouterFichierMenu(){
 
             ui->tabWidgetFichier->addTab(editor, QFileInfo(nom_fichier).fileName());
             ui->tabWidgetFichier->setTabsClosable(true);
-
-            connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);
         }
         else{
             qDebug()<<"Erreur d'ouverture du fichier";
