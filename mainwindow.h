@@ -46,7 +46,6 @@ private:
 private slots:
     void ouvrirFichierMenu();
     void ajouterFichierMenuText(const QString &fileName = "");
-    void ouvrirToutFichierRecent();
     void creditFichierMenu();
     void editerFichierMenu();
     void sauvegarderFichierActuel();
@@ -55,5 +54,6 @@ private slots:
     void remplacerText();
     void updateFichierRecent();
     void ouvrirFichierRecent();
+    void ouvrirToutFichierRecent();
 };
 #endif // MAINWINDOW_H

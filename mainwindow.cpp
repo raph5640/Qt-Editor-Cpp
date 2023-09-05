@@ -75,6 +75,13 @@ void MainWindow::ouvrirFichierMenu(){
     qDebug()<<"lecture fichier menu";
     ui->stackedWidget->setCurrentIndex(0);
     QString nom_fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), "", tr("Tous les fichiers (*)"));
+    for (int i = 0; i < liste_fichier_ouvert.size(); ++i) {
+        if (liste_fichier_ouvert[i]->fileName() == nom_fichier) {
+            ui->tabWidgetFichier->setCurrentIndex(i);
+            QMessageBox::warning(this, tr("Erreur"), tr("Le fichier %1 est déja ouvert !").arg(nom_fichier));
+            return;
+        }
+    }
     if (!nom_fichier.isEmpty()){
         QFile *fichier = new QFile(nom_fichier);
         if (fichier->open(QIODevice::ReadOnly)){
@@ -253,8 +260,9 @@ void MainWindow::updateFichierRecent() {
         recentFileActs[i]->setData(recentFiles[i]);
         recentFileActs[i]->setVisible(true);
     }
-    for (int j = numRecentFiles; j < MaxRecentFiles; ++j)
+    for (int j = numRecentFiles; j < MaxRecentFiles; ++j){
         recentFileActs[j]->setVisible(false);
+    }
 }
 
 void MainWindow::ouvrirFichierRecent() {
@@ -305,4 +313,11 @@ void MainWindow::ajouterFichierMenuText(const QString &fileName) {
     }
 }
 
-void MainWindow::ouvrirToutFichierRecent(){}
+void MainWindow::ouvrirToutFichierRecent() {
+    qDebug()<<"Vous ouvrez les 10 derniers fichiers recemments ouvert";
+    QStringList fichiersRécents = editor_settings->value("Fichier recent").toStringList();
+    for (const QString &fichier : fichiersRécents) {
+        ajouterFichierMenuText(fichier);
+    }
+}
+
