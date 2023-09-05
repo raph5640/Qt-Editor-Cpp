@@ -30,6 +30,7 @@ void MainWindow::init_Connections(){
     connect(ui->actionCredit_de_fichier_txt, &QAction::triggered, this, &MainWindow::creditFichierMenu);
     connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);
     connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);
+    connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);
 }
 
 void MainWindow::ajouterFichierMenu(){
@@ -63,6 +64,9 @@ void MainWindow::ajouterFichierMenu(){
     }
 }
 
+void MainWindow::sauvegarderFichierActuel(){
+    sauvegarde_fichier(ui->tabWidgetFichier->currentIndex());
+}
 void MainWindow::creditFichierMenu(){
     qDebug()<<"Crédit fichier menu";
     ui->stackedWidget->setCurrentIndex(1);

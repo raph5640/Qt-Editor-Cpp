@@ -64,17 +64,18 @@
    </property>
    <widget class="QMenu" name="menuEdition">
     <property name="title">
-     <string>Edition</string>
+     <string>&amp;Edition</string>
     </property>
     <addaction name="actionCredit_de_fichier_txt"/>
    </widget>
    <widget class="QMenu" name="menuLecture">
     <property name="title">
-     <string>Fichier</string>
+     <string>&amp;Fichier</string>
     </property>
     <addaction name="actionEditer_les_fichiers_ouverts"/>
     <addaction name="separator"/>
     <addaction name="actionAjouter_fichier_txt"/>
+    <addaction name="actionSauvegarder"/>
    </widget>
    <addaction name="menuLecture"/>
    <addaction name="menuEdition"/>
@@ -92,12 +93,17 @@
   </action>
   <action name="actionAjouter_fichier_txt">
    <property name="text">
-    <string>Ajouter fichier .txt</string>
+    <string>&amp;Ajouter fichier .txt</string>
    </property>
   </action>
   <action name="actionEditer_les_fichiers_ouverts">
    <property name="text">
     <string>Editer les fichiers ouverts</string>
+   </property>
+  </action>
+  <action name="actionSauvegarder">
+   <property name="text">
+    <string>&amp;Sauvegarder</string>
    </property>
   </action>
  </widget>

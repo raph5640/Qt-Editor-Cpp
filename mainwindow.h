@@ -40,5 +40,6 @@ private slots:
     void ajouterFichierMenu();
     void creditFichierMenu();
     void editerFichierMenu();
+    void sauvegarderFichierActuel();
 };
 #endif // MAINWINDOW_H
