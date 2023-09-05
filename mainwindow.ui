@@ -31,10 +31,10 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_Ecriture">
+      <widget class="QWidget" name="page_Credit">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="label_credit">
           <property name="text">
            <string>                                                        Cet editeur de text a été développé par Raphael De Oliveira</string>
           </property>
@@ -45,7 +45,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="label_editorcpp">
       <property name="text">
        <string>                                                                                   Editor C++ (by Raphael De Oliveira)</string>
       </property>
