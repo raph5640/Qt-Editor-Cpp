@@ -26,19 +26,19 @@ void MainWindow::init_Connections(){
 void MainWindow::lectureFichierMenu(){
     qDebug()<<"lecture fichier menu";
     ui->stackedWidget->setCurrentIndex(0);
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), "", tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+    QString nom_fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), "", tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
 
-    if (!fileName.isEmpty()){
-        QFile file(fileName);
-        if (file.open(QIODevice::ReadOnly)){
-            QTextStream in(&file);
-            QString fileContent = in.readAll();
-            file.close();
+    if (!nom_fichier.isEmpty()){
+        QFile fichier(nom_fichier);
+        if (fichier.open(QIODevice::ReadOnly)){
+            QTextStream in(&fichier);
+            QString contenu_fichier = in.readAll();
+            fichier.close();
 
             QPlainTextEdit *editor = new QPlainTextEdit;
-            editor->setPlainText(fileContent);
+            editor->setPlainText(contenu_fichier);
 
-            ui->tabWidget->addTab(editor, QFileInfo(fileName).fileName());
+            ui->tabWidget->addTab(editor, QFileInfo(nom_fichier).fileName());
             ui->tabWidget->setTabsClosable(true);
 
             connect(ui->tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
