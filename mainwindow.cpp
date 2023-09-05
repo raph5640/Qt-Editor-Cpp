@@ -37,10 +37,8 @@ MainWindow::~MainWindow()
     delete editor_settings;
     delete ui;
 }
-/**
- * @brief Initialisation des connexions pour les actions de l'interface.
- * @return void
- * @param void
+/*!
+ * \brief Initialise les connexions pour les actions de l'interface.
  */
 void MainWindow::init_Connections(){
     connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ouvrirFichierMenu);          //Connection ajouter un fichier
@@ -57,10 +55,8 @@ void MainWindow::init_Connections(){
     }
     connect(ui->actionOpen_des_fichiers, &QAction::triggered, this, &MainWindow::ouvrirToutFichierRecent);
 }
-/**
- * @brief Initialisation les short-cut pour les actions de l'interface.
- * @return void
- * @param void
+/*!
+ * \brief Initialise les raccourcis pour les actions de l'interface.
  */
 void MainWindow::init_shortcut(){
     ui->actionSauvegarder->setShortcut(QKeySequence("Ctrl+S"));
@@ -68,10 +64,8 @@ void MainWindow::init_shortcut(){
     ui->actionChercher_du_texte->setShortcut(QKeySequence("Ctrl+F"));
     ui->action_Remplacer->setShortcut(QKeySequence("Ctrl+R"));
 }
-/**
- * @brief FONCTION SLOT : Ajoute un nouveau fichier a l'espace de travail en ouvrant le repertoire
- * @return void
- * @param void
+/*!
+ * \brief Ajoute un nouveau fichier à l'espace de travail en ouvrant le répertoire.
  */
 void MainWindow::ouvrirFichierMenu(){
     qDebug()<<"lecture fichier menu";
@@ -123,23 +117,30 @@ void MainWindow::ouvrirFichierMenu(){
     }
 }
 
+/*!
+ * \brief Sauvegarde le fichier actuellement édité.
+ */
 void MainWindow::sauvegarderFichierActuel(){
     sauvegarde_fichier(ui->tabWidgetFichier->currentIndex());
 }
+/*!
+ * \brief Affiche les crédits de l'application.
+ */
 void MainWindow::creditFichierMenu(){
     qDebug()<<"Crédit fichier menu";
     ui->stackedWidget->setCurrentIndex(1);
 }
-
+/*!
+ * \brief Passe en mode édition pour les fichiers ouverts.
+ */
 void MainWindow::editerFichierMenu(){
     qDebug()<<"Editer les fichiers ouverts menu";
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-/**
- * @brief FONCTION SLOT : Sauvegarde le fichier contenu dans l'index donné en parametre
- * @return void
- * @param int index
+/*!
+ * \brief Sauvegarde le fichier contenu à l'index donné.
+ * \param index L'index du fichier à sauvegarder.
  */
 void MainWindow::sauvegarde_fichier(int index) {
     qDebug()<<"Vous faites une sauvegarde du fichier en cours de modifications";
@@ -164,10 +165,9 @@ void MainWindow::sauvegarde_fichier(int index) {
     }
 }
 
-/**
- * @brief FONCTION SLOT :Fermeture de l'onglet si le fichier est en cours de modification on propose de sauvegarder ou de revenir en arriere (Cancel)
- * @return void
- * @param int index
+/*!
+ * \brief Ferme l'onglet. Si le fichier est en cours de modification, propose de sauvegarder ou de revenir en arrière.
+ * \param index L'index de l'onglet à fermer.
  */
 void MainWindow::close_onglet(int index){
     QWidget *widget = ui->tabWidgetFichier->widget(index);
@@ -186,10 +186,8 @@ void MainWindow::close_onglet(int index){
     delete liste_fichier_ouvert.takeAt(index);
     delete widget;  // Libération de la mémoire
 }
-/**
- * @brief FONCTION SLOT : Afficher la ligne et la colonne ou se situe le curseur actuellement au niveau de la status bar de ma MainWindow
- * @return void
- * @param void
+/*!
+ * \brief Met à jour l'affichage de la position du curseur dans la barre de statut.
  */
 void MainWindow::updateCursor(){
     QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
@@ -200,7 +198,9 @@ void MainWindow::updateCursor(){
         ui->statusbar->showMessage(tr("Ligne : %1     Colonne : %2").arg(ligne).arg(colonne));
     }
 }
-
+/*!
+ * \brief Lance une recherche de texte dans l'éditeur.
+ */
 void MainWindow::chercherText(){
     qDebug()<<"Vous faites une recherche de text dans votre editeur";
     QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
@@ -220,7 +220,9 @@ void MainWindow::chercherText(){
         editor->setTextCursor(found);
     }
 }
-
+/*!
+ * \brief Remplace un texte donné par un autre dans l'éditeur.
+ */
 void MainWindow::remplacerText(){
     QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
     editor->moveCursor(QTextCursor::Start);

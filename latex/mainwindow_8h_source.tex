@@ -21,24 +21,31 @@
 \DoxyCodeLine{31     \mbox{\hyperlink{classMainWindow}{\string~MainWindow}}();}
 \DoxyCodeLine{32 }
 \DoxyCodeLine{33 \textcolor{keyword}{private}:}
-\DoxyCodeLine{34     Ui::MainWindow *ui;}
-\DoxyCodeLine{35     QList<QFile*> liste\_fichier\_ouvert;}
-\DoxyCodeLine{36     QSettings *editor\_settings;}
-\DoxyCodeLine{37     \textcolor{keywordtype}{void} init\_Connections();}
-\DoxyCodeLine{38     \textcolor{keywordtype}{void} init\_shortcut();}
-\DoxyCodeLine{39     \textcolor{keywordtype}{void} close\_onglet(\textcolor{keywordtype}{int} index);}
-\DoxyCodeLine{40     \textcolor{keywordtype}{void} sauvegarde\_fichier(\textcolor{keywordtype}{int} index);}
-\DoxyCodeLine{41 }
-\DoxyCodeLine{42 \textcolor{keyword}{private} slots:}
-\DoxyCodeLine{43     \textcolor{keywordtype}{void} ajouterFichierMenu();}
-\DoxyCodeLine{44     \textcolor{keywordtype}{void} creditFichierMenu();}
-\DoxyCodeLine{45     \textcolor{keywordtype}{void} editerFichierMenu();}
-\DoxyCodeLine{46     \textcolor{keywordtype}{void} sauvegarderFichierActuel();}
-\DoxyCodeLine{47     \textcolor{keywordtype}{void} updateCursor();}
-\DoxyCodeLine{48     \textcolor{keywordtype}{void} chercherText();}
-\DoxyCodeLine{49     \textcolor{keywordtype}{void} remplacerText();}
-\DoxyCodeLine{50     \textcolor{keywordtype}{void} afficherFichiersRecents();}
-\DoxyCodeLine{51 \};}
-\DoxyCodeLine{52 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// MAINWINDOW\_H}}
+\DoxyCodeLine{34     \textcolor{comment}{//Mes attributs privé}}
+\DoxyCodeLine{35     Ui::MainWindow *ui;}
+\DoxyCodeLine{36     QList<QFile*> liste\_fichier\_ouvert;}
+\DoxyCodeLine{37     QSettings *editor\_settings;}
+\DoxyCodeLine{38     QList<QAction *> recentFileActs;}
+\DoxyCodeLine{39     \textcolor{keyword}{const} \textcolor{keywordtype}{int} MaxRecentFiles = 10;}
+\DoxyCodeLine{40     \textcolor{comment}{//Quelques methodes}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{void} init\_Connections();}
+\DoxyCodeLine{42     \textcolor{keywordtype}{void} init\_shortcut();}
+\DoxyCodeLine{47     \textcolor{keywordtype}{void} close\_onglet(\textcolor{keywordtype}{int} index);}
+\DoxyCodeLine{48     \textcolor{keywordtype}{void} sauvegarde\_fichier(\textcolor{keywordtype}{int} index);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{keyword}{private} slots:}
+\DoxyCodeLine{51     \textcolor{keywordtype}{void} ouvrirFichierMenu();}
+\DoxyCodeLine{52     \textcolor{keywordtype}{void} ajouterFichierMenuText(\textcolor{keyword}{const} QString \&fileName = \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{53     \textcolor{keywordtype}{void} creditFichierMenu();}
+\DoxyCodeLine{54     \textcolor{keywordtype}{void} editerFichierMenu();}
+\DoxyCodeLine{55     \textcolor{keywordtype}{void} sauvegarderFichierActuel();}
+\DoxyCodeLine{56     \textcolor{keywordtype}{void} updateCursor();}
+\DoxyCodeLine{57     \textcolor{keywordtype}{void} chercherText();}
+\DoxyCodeLine{58     \textcolor{keywordtype}{void} remplacerText();}
+\DoxyCodeLine{59     \textcolor{keywordtype}{void} updateFichierRecent();}
+\DoxyCodeLine{60     \textcolor{keywordtype}{void} ouvrirFichierRecent();}
+\DoxyCodeLine{61     \textcolor{keywordtype}{void} ouvrirToutFichierRecent();}
+\DoxyCodeLine{62 \};}
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// MAINWINDOW\_H}}
 
 \end{DoxyCode}
