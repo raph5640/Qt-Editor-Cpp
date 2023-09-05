@@ -1,0 +1,32 @@
+\hypertarget{mainwindow_8h_source}{}\doxysection{mainwindow.\+h}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef MAINWINDOW\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define MAINWINDOW\_H}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <QPlainTextEdit>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <QMainWindow>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 QT\_BEGIN\_NAMESPACE}
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }Ui \{ \textcolor{keyword}{class }\mbox{\hyperlink{classMainWindow}{MainWindow}}; \}}
+\DoxyCodeLine{8 QT\_END\_NAMESPACE}
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classMainWindow}{MainWindow}} : \textcolor{keyword}{public} QMainWindow}
+\DoxyCodeLine{23 \{}
+\DoxyCodeLine{24     Q\_OBJECT}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27     \mbox{\hyperlink{classMainWindow}{MainWindow}}(QWidget *parent = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{28     \mbox{\hyperlink{classMainWindow}{\string~MainWindow}}();}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{private}:}
+\DoxyCodeLine{31     Ui::MainWindow *ui;}
+\DoxyCodeLine{32     \textcolor{keywordtype}{void} init\_Connections();}
+\DoxyCodeLine{33     \textcolor{keywordtype}{void} close\_onglet(\textcolor{keywordtype}{int} index);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{private} slots:}
+\DoxyCodeLine{36     \textcolor{keywordtype}{void} ajouterFichierMenu();}
+\DoxyCodeLine{37     \textcolor{keywordtype}{void} creditFichierMenu();}
+\DoxyCodeLine{38     \textcolor{keywordtype}{void} editerFichierMenu();}
+\DoxyCodeLine{39 \};}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// MAINWINDOW\_H}}
+
+\end{DoxyCode}

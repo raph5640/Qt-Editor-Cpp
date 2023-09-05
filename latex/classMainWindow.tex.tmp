@@ -1,0 +1,47 @@
+\hypertarget{classMainWindow}{}\doxysection{Main\+Window Class Reference}
+\label{classMainWindow}\index{MainWindow@{MainWindow}}
+
+
+La fenêtre principale de l\textquotesingle{}application.  
+
+
+
+
+{\ttfamily \#include $<$mainwindow.\+h$>$}
+
+
+
+Inheritance diagram for Main\+Window\+:
+% FIG 0
+
+
+Collaboration diagram for Main\+Window\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMainWindow_a996c5a2b6f77944776856f08ec30858d}\label{classMainWindow_a996c5a2b6f77944776856f08ec30858d}} 
+{\bfseries Main\+Window} (QWidget $\ast$parent=nullptr)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+La fenêtre principale de l\textquotesingle{}application. 
+
+À partir de cette fenêtre, vous pouvez sélectionner différentes actions via la barre de menu.
+
+Menu Fichier \+:
+\begin{DoxyItemize}
+\item Editer les fichiers ouverts \+: permet de se déplacer dans la fenêtre pour éditer des fichiers après les avoir ajoutés.
+\item Ajouter fichier .txt \+: ouvre un fichier .txt de votre répertoire et l\textquotesingle{}ajoute à l\textquotesingle{}ensemble des fichiers ouverts.
+\end{DoxyItemize}
+
+Menu Edition \+:
+\begin{DoxyItemize}
+\item Crédit \+: vous permet de voir les crédit (createurs de l\textquotesingle{}application) 
+\end{DoxyItemize}
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+mainwindow.\+h\item 
+mainwindow.\+cpp\end{DoxyCompactItemize}

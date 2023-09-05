@@ -4,6 +4,7 @@
 #include <QString>
 #include <QFileDialog>
 #include <QPlainTextEdit>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -18,7 +19,11 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+/**
+ * @brief Initialisation des connexions pour les actions de l'interface.
+ * @return void
+ * @param void
+ */
 void MainWindow::init_Connections(){
     connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ajouterFichierMenu);
     connect(ui->actionCredit_de_fichier_txt, &QAction::triggered, this, &MainWindow::creditFichierMenu);
@@ -39,8 +44,14 @@ void MainWindow::ajouterFichierMenu(){
             fichier.close();
 
             QPlainTextEdit *editor = new QPlainTextEdit;
+            //ICI J'ECRIS UNE FONDCTION LAMBDA QUI CAPTURE LES VARIABLES this, editor POUR VERIFIER QUE LE FICHIER EST MODIFIER OU NON ET ECRIRE * DANS LE STACK WIDGET
+            connect(editor, &QPlainTextEdit::textChanged, this, [this, editor](){
+                int index = ui->tabWidgetFichier->indexOf(editor);
+                if(ui->tabWidgetFichier->tabText(index).endsWith("*")==false){
+                    ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index) + "*");
+                }
+            });
             editor->setPlainText(contenu_fichier);
-
             ui->tabWidgetFichier->addTab(editor, QFileInfo(nom_fichier).fileName());
             ui->tabWidgetFichier->setTabsClosable(true);
         }
