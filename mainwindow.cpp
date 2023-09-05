@@ -43,14 +43,16 @@ MainWindow::~MainWindow()
  * @param void
  */
 void MainWindow::init_Connections(){
-    connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ouvrirFichierMenu);         //Connection ajouter un fichier
+    connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ouvrirFichierMenu);          //Connection ajouter un fichier
     connect(ui->actionCredit_de_fichier_txt, &QAction::triggered, this, &MainWindow::creditFichierMenu);        //Connection crédit menu action
     connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);             //Connection la croix de fermeture "x" avec le slot close_onglet
     connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);  //Connection permettant de revenir a l'espace de travail
     connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);           //Connection pour la sauvegarde de fichier
     connect(ui->actionChercher_du_texte, &QAction::triggered, this, &MainWindow::chercherText);                 //Connection pour recherche du text dans l'editeur (Ctrl+F)
     connect(ui->action_Remplacer, &QAction::triggered, this,&MainWindow::remplacerText);
-    for (QAction *action : recentFileActs) {                                            //J'initialise toutes les actions correspondant a chacun des fichiers recents afin de pouvoir les ouvrir via le menu
+    connect(ui->menuMon_Espace, &QMenu::aboutToShow, this, &MainWindow::editerFichierMenu);
+    //J'initialise toutes les actions correspondant a chacun des fichiers recents afin de pouvoir les ouvrir via le menu
+    for (QAction *action : recentFileActs) {
         connect(action, &QAction::triggered, this, &MainWindow::ouvrirFichierRecent);
     }
     connect(ui->actionOpen_des_fichiers, &QAction::triggered, this, &MainWindow::ouvrirToutFichierRecent);
@@ -213,7 +215,7 @@ void MainWindow::chercherText(){
     QTextCursor found = editor->document()->find(text, editor->textCursor(), QTextDocument::FindWholeWords);
 
     if(found.isNull()) {
-        QMessageBox::information(this, tr("Recherche"), tr("Texte non trouvé"));
+        QMessageBox::information(this, tr("Recherche"), tr("Votre texte %1 n'a pas été trouvé").arg(text));
     } else {
         editor->setTextCursor(found);
     }
@@ -224,31 +226,29 @@ void MainWindow::remplacerText(){
     if(!editor) {
         return;
     }
-    //Creation de la boite pour la recherche du text a remplacer
-    QInputDialog *boiteDialog = new QInputDialog(this);
-    boiteDialog->setOptions(QInputDialog::UsePlainTextEditForTextInput);
+    //Les boites de dialogues
     QString rechercheText = QInputDialog::getText(this, tr("Recherche"), tr("Texte à chercher "));
     QString replaceText = QInputDialog::getText(this, tr("Remplacement"), tr("Remplacer %1 par ").arg(rechercheText));
 
-    //On vérifie que l'on a bien rentré du texte dans les deux boites de dialogues
+    //On vérifie que l'on a bien rentré du texte dans les deux boîtes de dialogues
     if(rechercheText.isEmpty() || replaceText.isEmpty()) {
         return;
     }
+    //Effectuer une recherche tout en respectant la casse
+    QTextDocument::FindFlags drapeau;
+    drapeau = drapeau | QTextDocument::FindCaseSensitively;
 
-    // Remplacement
-    QTextCursor cursor = editor->textCursor();
-    cursor.beginEditBlock();
-    QTextCursor foundtext = editor->document()->find(rechercheText, cursor);
-    while(!foundtext.isNull()) {
-        int position = foundtext.position();  //Sauvegarder la position actuelle du curseur
-        foundtext.insertText(replaceText);  //Remplacer le texte
-        cursor.setPosition(position + replaceText.length());  //Mettre à jour la position du curseur
-        foundtext = editor->document()->find(rechercheText, cursor);  //Chercher la prochaine occurrence
+    QTextCursor currentCursor = editor->textCursor();
+
+    //Cherche la première occurrence
+    QTextCursor found = editor->document()->find(rechercheText, currentCursor, drapeau);
+
+    while(!found.isNull()) {
+        found.insertText(replaceText);
+        found = editor->document()->find(rechercheText, found, drapeau);
     }
-    cursor.endEditBlock();
-
-    qDebug()<<"Fini remplacement";
 }
+
 
 void MainWindow::updateFichierRecent() {
     QStringList recentFiles = editor_settings->value("Fichier recent").toStringList();

@@ -88,8 +88,14 @@
     <addaction name="separator"/>
     <addaction name="actionEditer_les_fichiers_ouverts"/>
    </widget>
+   <widget class="QMenu" name="menuMon_Espace">
+    <property name="title">
+     <string>Mon Espace de travail</string>
+    </property>
+   </widget>
    <addaction name="menuLecture"/>
    <addaction name="menuEdition"/>
+   <addaction name="menuMon_Espace"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionLecture_de_fichier_txt">
