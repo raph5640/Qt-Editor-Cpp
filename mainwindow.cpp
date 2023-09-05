@@ -32,6 +32,7 @@ void MainWindow::init_Connections(){
     connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);
     connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);
     ui->actionSauvegarder->setShortcut(QKeySequence("Ctrl+S"));
+    ui->actionAjouter_fichier_txt->setShortcut(QKeySequence("Ctrl+A"));
 }
 
 void MainWindow::ajouterFichierMenu(){
