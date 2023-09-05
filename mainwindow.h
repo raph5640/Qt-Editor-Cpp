@@ -17,5 +17,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void init_Connections();
+    void closeTab(int index);
+
+private slots:
+    void lectureFichierMenu();
+    void ecritureFichierMenu();
 };
 #endif // MAINWINDOW_H
