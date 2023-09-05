@@ -31,6 +31,7 @@ void MainWindow::init_Connections(){
     connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);
     connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);
     connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);
+    ui->actionSauvegarder->setShortcut(QKeySequence("Ctrl+S"));
 }
 
 void MainWindow::ajouterFichierMenu(){
