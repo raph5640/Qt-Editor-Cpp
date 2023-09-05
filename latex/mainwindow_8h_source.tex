@@ -7,35 +7,38 @@
 \DoxyCodeLine{4 \textcolor{preprocessor}{\#include <QMainWindow>}}
 \DoxyCodeLine{5 \textcolor{preprocessor}{\#include <QList>}}
 \DoxyCodeLine{6 \textcolor{preprocessor}{\#include <QFile>}}
-\DoxyCodeLine{7 }
-\DoxyCodeLine{8 QT\_BEGIN\_NAMESPACE}
-\DoxyCodeLine{9 \textcolor{keyword}{namespace }Ui \{ \textcolor{keyword}{class }\mbox{\hyperlink{classMainWindow}{MainWindow}}; \}}
-\DoxyCodeLine{10 QT\_END\_NAMESPACE}
-\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classMainWindow}{MainWindow}} : \textcolor{keyword}{public} QMainWindow}
-\DoxyCodeLine{25 \{}
-\DoxyCodeLine{26     Q\_OBJECT}
-\DoxyCodeLine{27 }
-\DoxyCodeLine{28 \textcolor{keyword}{public}:}
-\DoxyCodeLine{29     \mbox{\hyperlink{classMainWindow}{MainWindow}}(QWidget *parent = \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{30     \mbox{\hyperlink{classMainWindow}{\string~MainWindow}}();}
-\DoxyCodeLine{31 }
-\DoxyCodeLine{32 \textcolor{keyword}{private}:}
-\DoxyCodeLine{33     Ui::MainWindow *ui;}
-\DoxyCodeLine{34     QList<QFile*> liste\_fichier\_ouvert;}
-\DoxyCodeLine{35     \textcolor{keywordtype}{void} init\_Connections();}
-\DoxyCodeLine{36     \textcolor{keywordtype}{void} init\_shortcut();}
-\DoxyCodeLine{37     \textcolor{keywordtype}{void} close\_onglet(\textcolor{keywordtype}{int} index);}
-\DoxyCodeLine{38     \textcolor{keywordtype}{void} sauvegarde\_fichier(\textcolor{keywordtype}{int} index);}
-\DoxyCodeLine{39 }
-\DoxyCodeLine{40 \textcolor{keyword}{private} slots:}
-\DoxyCodeLine{41     \textcolor{keywordtype}{void} ajouterFichierMenu();}
-\DoxyCodeLine{42     \textcolor{keywordtype}{void} creditFichierMenu();}
-\DoxyCodeLine{43     \textcolor{keywordtype}{void} editerFichierMenu();}
-\DoxyCodeLine{44     \textcolor{keywordtype}{void} sauvegarderFichierActuel();}
-\DoxyCodeLine{45     \textcolor{keywordtype}{void} updateCursor();}
-\DoxyCodeLine{46     \textcolor{keywordtype}{void} chercherText();}
-\DoxyCodeLine{47     \textcolor{keywordtype}{void} remplacerText();}
-\DoxyCodeLine{48 \};}
-\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// MAINWINDOW\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <QSettings>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 QT\_BEGIN\_NAMESPACE}
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }Ui \{ \textcolor{keyword}{class }\mbox{\hyperlink{classMainWindow}{MainWindow}}; \}}
+\DoxyCodeLine{11 QT\_END\_NAMESPACE}
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classMainWindow}{MainWindow}} : \textcolor{keyword}{public} QMainWindow}
+\DoxyCodeLine{26 \{}
+\DoxyCodeLine{27     Q\_OBJECT}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{public}:}
+\DoxyCodeLine{30     \mbox{\hyperlink{classMainWindow}{MainWindow}}(QWidget *parent = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{31     \mbox{\hyperlink{classMainWindow}{\string~MainWindow}}();}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{private}:}
+\DoxyCodeLine{34     Ui::MainWindow *ui;}
+\DoxyCodeLine{35     QList<QFile*> liste\_fichier\_ouvert;}
+\DoxyCodeLine{36     QSettings *editor\_settings;}
+\DoxyCodeLine{37     \textcolor{keywordtype}{void} init\_Connections();}
+\DoxyCodeLine{38     \textcolor{keywordtype}{void} init\_shortcut();}
+\DoxyCodeLine{39     \textcolor{keywordtype}{void} close\_onglet(\textcolor{keywordtype}{int} index);}
+\DoxyCodeLine{40     \textcolor{keywordtype}{void} sauvegarde\_fichier(\textcolor{keywordtype}{int} index);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keyword}{private} slots:}
+\DoxyCodeLine{43     \textcolor{keywordtype}{void} ajouterFichierMenu();}
+\DoxyCodeLine{44     \textcolor{keywordtype}{void} creditFichierMenu();}
+\DoxyCodeLine{45     \textcolor{keywordtype}{void} editerFichierMenu();}
+\DoxyCodeLine{46     \textcolor{keywordtype}{void} sauvegarderFichierActuel();}
+\DoxyCodeLine{47     \textcolor{keywordtype}{void} updateCursor();}
+\DoxyCodeLine{48     \textcolor{keywordtype}{void} chercherText();}
+\DoxyCodeLine{49     \textcolor{keywordtype}{void} remplacerText();}
+\DoxyCodeLine{50     \textcolor{keywordtype}{void} afficherFichiersRecents();}
+\DoxyCodeLine{51 \};}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// MAINWINDOW\_H}}
 
 \end{DoxyCode}

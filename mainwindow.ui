@@ -72,6 +72,7 @@
     <property name="title">
      <string>&amp;Fichier</string>
     </property>
+    <addaction name="actionAfficher_les_fichiers_recents"/>
     <addaction name="actionEditer_les_fichiers_ouverts"/>
     <addaction name="actionChercher_du_texte"/>
     <addaction name="action_Remplacer"/>
@@ -116,6 +117,11 @@
   <action name="action_Remplacer">
    <property name="text">
     <string>Remplacer</string>
+   </property>
+  </action>
+  <action name="actionAfficher_les_fichiers_recents">
+   <property name="text">
+    <string>Afficher les fichiers recents</string>
    </property>
   </action>
  </widget>

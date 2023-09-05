@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QList>
 #include <QFile>
+#include <QSettings>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,6 +33,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QList<QFile*> liste_fichier_ouvert;
+    QSettings *editor_settings;
     void init_Connections();
     void init_shortcut();
     void close_onglet(int index);
@@ -45,5 +47,6 @@ private slots:
     void updateCursor();
     void chercherText();
     void remplacerText();
+    void afficherFichiersRecents();
 };
 #endif // MAINWINDOW_H

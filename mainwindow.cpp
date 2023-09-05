@@ -6,11 +6,15 @@
 #include <QPlainTextEdit>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QSettings>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
+    editor_settings = new QSettings("Organisation", "EditorC++", this);
     //Initialisation
     init_Connections();
     init_shortcut();
@@ -25,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete editor_settings;
     delete ui;
 }
 /**
@@ -40,6 +45,7 @@ void MainWindow::init_Connections(){
     connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);           //Connection pour la sauvegarde de fichier
     connect(ui->actionChercher_du_texte, &QAction::triggered, this, &MainWindow::chercherText);                 //Connection pour recherche du text dans l'editeur (Ctrl+F)
     connect(ui->action_Remplacer, &QAction::triggered, this,&MainWindow::remplacerText);
+    connect(ui->actionAfficher_les_fichiers_recents, &QAction::triggered,this , &MainWindow::afficherFichiersRecents);
 }
 /**
  * @brief Initialisation les short-cut pour les actions de l'interface.
@@ -53,7 +59,7 @@ void MainWindow::init_shortcut(){
     ui->action_Remplacer->setShortcut(QKeySequence("Ctrl+R"));
 }
 /**
- * @brief Ajoute un nouveau fichier a l'espace de travail en ouvrant le repertoire
+ * @brief FONCTION SLOT : Ajoute un nouveau fichier a l'espace de travail en ouvrant le repertoire
  * @return void
  * @param void
  */
@@ -89,6 +95,14 @@ void MainWindow::ajouterFichierMenu(){
         else{
             qDebug()<<"Erreur d'ouverture du fichier";
         }
+        //Ajouter le fichier à la liste des derniers fichiers ouverts (dans mon attribut privé editor_settings)
+        QStringList Fichier_recent = editor_settings->value("Fichier recent").toStringList();
+        Fichier_recent.removeAll(nom_fichier);
+        Fichier_recent.prepend(nom_fichier);
+        while (Fichier_recent.size() > 10)
+            Fichier_recent.removeLast();
+
+        editor_settings->setValue("Fichier recent", Fichier_recent);
     }
 }
 
@@ -106,7 +120,7 @@ void MainWindow::editerFichierMenu(){
 }
 
 /**
- * @brief Sauvegarde le fichier contenu dans l'index donné en parametre
+ * @brief FONCTION SLOT : Sauvegarde le fichier contenu dans l'index donné en parametre
  * @return void
  * @param int index
  */
@@ -134,7 +148,7 @@ void MainWindow::sauvegarde_fichier(int index) {
 }
 
 /**
- * @brief Fermeture de l'onglet si le fichier est en cours de modification on propose de sauvegarder ou de revenir en arriere (Cancel)
+ * @brief FONCTION SLOT :Fermeture de l'onglet si le fichier est en cours de modification on propose de sauvegarder ou de revenir en arriere (Cancel)
  * @return void
  * @param int index
  */
@@ -155,7 +169,11 @@ void MainWindow::close_onglet(int index){
     delete liste_fichier_ouvert.takeAt(index);
     delete widget;  // Libération de la mémoire
 }
-
+/**
+ * @brief FONCTION SLOT : Afficher la ligne et la colonne ou se situe le curseur actuellement au niveau de la status bar de ma MainWindow
+ * @return void
+ * @param void
+ */
 void MainWindow::updateCursor(){
     QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
     if(editor){
@@ -215,4 +233,15 @@ void MainWindow::remplacerText(){
     cursor.endEditBlock();
 
     qDebug()<<"Fini remplacement";
+}
+
+void MainWindow::afficherFichiersRecents(){
+    QStringList fichiersRecents = editor_settings->value("Fichier recent").toStringList();
+
+    QString message = "Fichiers récemment ouverts :\n";
+    for (const QString& fichier : fichiersRecents) {
+        message += fichier + "\n";
+    }
+
+    QMessageBox::information(this, "Fichiers récents", message);
 }
