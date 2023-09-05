@@ -47,7 +47,7 @@
     <item>
      <widget class="QLabel" name="label_editorcpp">
       <property name="text">
-       <string>                                                                                   Editor C++ (by Raphael De Oliveira)</string>
+       <string>                                                                                                                                                                      Editor C++ (by Raphael De Oliveira)</string>
       </property>
      </widget>
     </item>
@@ -73,6 +73,7 @@
      <string>&amp;Fichier</string>
     </property>
     <addaction name="actionEditer_les_fichiers_ouverts"/>
+    <addaction name="actionChercher_du_texte"/>
     <addaction name="separator"/>
     <addaction name="actionAjouter_fichier_txt"/>
     <addaction name="actionSauvegarder"/>
@@ -104,6 +105,11 @@
   <action name="actionSauvegarder">
    <property name="text">
     <string>&amp;Sauvegarder</string>
+   </property>
+  </action>
+  <action name="actionChercher_du_texte">
+   <property name="text">
+    <string>Chercher du texte</string>
    </property>
   </action>
  </widget>

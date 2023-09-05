@@ -5,7 +5,7 @@
 #include <QFileDialog>
 #include <QPlainTextEdit>
 #include <QMessageBox>
-
+#include <QInputDialog>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -31,8 +31,10 @@ void MainWindow::init_Connections(){
     connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);             //Connection la croix de fermeture "x" avec le slot close_onglet
     connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);  //Connection permettant de revenir a l'espace de travail
     connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);           //Connection pour la sauvegarde de fichier
+    connect(ui->actionChercher_du_texte, &QAction::triggered, this, &MainWindow::chercherText);
     ui->actionSauvegarder->setShortcut(QKeySequence("Ctrl+S"));
     ui->actionAjouter_fichier_txt->setShortcut(QKeySequence("Ctrl+A"));
+    ui->actionChercher_du_texte->setShortcut(QKeySequence("Ctrl+F"));
 }
 
 void MainWindow::ajouterFichierMenu(){
@@ -127,5 +129,25 @@ void MainWindow::updateCursor(){
         int ligne = cursor.blockNumber() +1;
         int colonne = cursor.columnNumber() +1;
         ui->statusbar->showMessage(tr("Ligne : %1     Colonne : %2").arg(ligne).arg(colonne));
+    }
+}
+
+void MainWindow::chercherText(){
+    qDebug()<<"Vous faites une recherche de text dans votre editeur";
+    QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
+    if(!editor) {
+        return;
+    }
+    QString text = QInputDialog::getText(this, tr("Recherche"), tr("Entrez le texte à rechercher:"));
+    if(text.isEmpty()) {
+        return;
+    }
+
+    QTextCursor found = editor->document()->find(text, editor->textCursor(), QTextDocument::FindWholeWords);
+
+    if(found.isNull()) {
+        QMessageBox::information(this, tr("Recherche"), tr("Texte non trouvé"));
+    } else {
+        editor->setTextCursor(found);
     }
 }

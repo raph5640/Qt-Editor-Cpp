@@ -42,5 +42,6 @@ private slots:
     void editerFichierMenu();
     void sauvegarderFichierActuel();
     void updateCursor();
+    void chercherText();
 };
 #endif // MAINWINDOW_H
