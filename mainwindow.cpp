@@ -26,11 +26,11 @@ MainWindow::~MainWindow()
  * @param void
  */
 void MainWindow::init_Connections(){
-    connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ajouterFichierMenu);
-    connect(ui->actionCredit_de_fichier_txt, &QAction::triggered, this, &MainWindow::creditFichierMenu);
-    connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);
-    connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);
-    connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);
+    connect(ui->actionAjouter_fichier_txt, &QAction::triggered, this, &MainWindow::ajouterFichierMenu);         //Connection ajouter un fichier
+    connect(ui->actionCredit_de_fichier_txt, &QAction::triggered, this, &MainWindow::creditFichierMenu);        //Connection crédit menu action
+    connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);             //Connection la croix de fermeture "x" avec le slot close_onglet
+    connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);  //Connection permettant de revenir a l'espace de travail
+    connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);           //Connection pour la sauvegarde de fichier
     ui->actionSauvegarder->setShortcut(QKeySequence("Ctrl+S"));
     ui->actionAjouter_fichier_txt->setShortcut(QKeySequence("Ctrl+A"));
 }
@@ -39,7 +39,6 @@ void MainWindow::ajouterFichierMenu(){
     qDebug()<<"lecture fichier menu";
     ui->stackedWidget->setCurrentIndex(0);
     QString nom_fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), "", tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
-
     if (!nom_fichier.isEmpty()){
         QFile *fichier = new QFile(nom_fichier);
         if (fichier->open(QIODevice::ReadOnly)){
@@ -56,6 +55,7 @@ void MainWindow::ajouterFichierMenu(){
                     ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index) + "*");
                 }
             });
+            connect(editor, &QPlainTextEdit::cursorPositionChanged,this,&MainWindow::updateCursor);
             editor->setPlainText(contenu_fichier);
             ui->tabWidgetFichier->addTab(editor, QFileInfo(nom_fichier).fileName());
             ui->tabWidgetFichier->setTabsClosable(true);
@@ -104,19 +104,28 @@ void MainWindow::sauvegarde_fichier(int index) {
 
 void MainWindow::close_onglet(int index){
     QWidget *widget = ui->tabWidgetFichier->widget(index);
-    // Vérifier si l'onglet est marqué comme modifié
     if(ui->tabWidgetFichier->tabText(index).endsWith("*")) {
         QMessageBox::StandardButton reponse;
         reponse = QMessageBox::question(this, "Fichier non sauvegardé","Le fichier a été modifié. Voulez-vous sauvegarder les modifications?",QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
 
         if(reponse == QMessageBox::Yes) {
             this->sauvegarde_fichier(index);
-            // Appeler une fonction pour sauvegarder le fichier, si nécessaire.
+
         } else if(reponse == QMessageBox::Cancel) {
             return;
         }
     }
     ui->tabWidgetFichier->removeTab(index);
-    delete liste_fichier_ouvert.takeAt(index);  // Deletes the QFile from heap and removes it from the list
+    delete liste_fichier_ouvert.takeAt(index);
     delete widget;  // Libération de la mémoire
+}
+
+void MainWindow::updateCursor(){
+    QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
+    if(editor){
+        QTextCursor cursor = editor->textCursor();
+        int ligne = cursor.blockNumber() +1;
+        int colonne = cursor.columnNumber() +1;
+        ui->statusbar->showMessage(tr("Ligne : %1     Colonne : %2").arg(ligne).arg(colonne));
+    }
 }

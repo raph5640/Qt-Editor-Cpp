@@ -41,5 +41,6 @@ private slots:
     void creditFichierMenu();
     void editerFichierMenu();
     void sauvegarderFichierActuel();
+    void updateCursor();
 };
 #endif // MAINWINDOW_H
