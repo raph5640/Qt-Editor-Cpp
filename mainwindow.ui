@@ -72,8 +72,9 @@
     <property name="title">
      <string>&amp;Fichier</string>
     </property>
-    <addaction name="actionAfficher_les_fichiers_recents"/>
     <addaction name="actionEditer_les_fichiers_ouverts"/>
+    <addaction name="separator"/>
+    <addaction name="actionAfficher_les_fichiers_recents"/>
     <addaction name="actionChercher_du_texte"/>
     <addaction name="action_Remplacer"/>
     <addaction name="separator"/>
@@ -96,12 +97,12 @@
   </action>
   <action name="actionAjouter_fichier_txt">
    <property name="text">
-    <string>Ajouter fichier .txt</string>
+    <string>New File</string>
    </property>
   </action>
   <action name="actionEditer_les_fichiers_ouverts">
    <property name="text">
-    <string>Editer les fichiers ouverts</string>
+    <string>Espace de travail</string>
    </property>
   </action>
   <action name="actionSauvegarder">
@@ -121,7 +122,7 @@
   </action>
   <action name="actionAfficher_les_fichiers_recents">
    <property name="text">
-    <string>Afficher les fichiers recents</string>
+    <string>Fichiers recent</string>
    </property>
   </action>
  </widget>

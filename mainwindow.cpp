@@ -66,7 +66,7 @@ void MainWindow::init_shortcut(){
 void MainWindow::ajouterFichierMenu(){
     qDebug()<<"lecture fichier menu";
     ui->stackedWidget->setCurrentIndex(0);
-    QString nom_fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), "", tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+    QString nom_fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), "", tr("Tous les fichiers (*)"));
     if (!nom_fichier.isEmpty()){
         QFile *fichier = new QFile(nom_fichier);
         if (fichier->open(QIODevice::ReadOnly)){
