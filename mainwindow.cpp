@@ -55,6 +55,7 @@ void MainWindow::init_Connections(){
         connect(action, &QAction::triggered, this, &MainWindow::ouvrirFichierRecent);
     }
     connect(ui->actionOpen_des_fichiers, &QAction::triggered, this, &MainWindow::ouvrirToutFichierRecent);
+    connect(ui->actionNew_File, &QAction::triggered, this, &MainWindow::newfile);
 }
 /*!
  * \brief Initialise les raccourcis pour les actions de l'interface.
@@ -324,3 +325,30 @@ void MainWindow::ouvrirToutFichierRecent() {
     }
 }
 
+/*!
+ * \brief Crée un nouveau fichier vierge dans un onglet.
+ */
+void MainWindow::newfile(){
+    qDebug()<<"Création d'un nouvel onglet pour un nouveau fichier";
+
+    QPlainTextEdit *editor = new QPlainTextEdit;
+    connect(editor, &QPlainTextEdit::textChanged, this, [this, editor](){
+        int index = ui->tabWidgetFichier->indexOf(editor);
+        if(ui->tabWidgetFichier->tabText(index).endsWith("*")==false){
+            ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index) + "*");
+        }
+    });
+    connect(editor, &QPlainTextEdit::cursorPositionChanged,this,&MainWindow::updateCursor);
+
+    ui->tabWidgetFichier->addTab(editor, tr("NEW :)"));
+    ui->tabWidgetFichier->setTabsClosable(true);
+
+    // Activer les actions "Chercher" et "Remplacer"
+    ui->actionChercher_du_texte->setEnabled(true);
+    ui->action_Remplacer->setEnabled(true);
+    ui->actionSauvegarder->setEnabled(true);
+
+    // Ajouter un fichier vide à la liste des fichiers ouverts
+    QFile *fichier = new QFile();
+    liste_fichier_ouvert.append(fichier);
+}

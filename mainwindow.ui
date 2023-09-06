@@ -79,6 +79,7 @@
      <addaction name="actionOpen_des_fichiers"/>
      <addaction name="separator"/>
     </widget>
+    <addaction name="actionNew_File"/>
     <addaction name="actionAjouter_fichier_txt"/>
     <addaction name="menuFichiers_recent"/>
     <addaction name="separator"/>
@@ -110,7 +111,7 @@
   </action>
   <action name="actionAjouter_fichier_txt">
    <property name="text">
-    <string>New File</string>
+    <string>Open File</string>
    </property>
   </action>
   <action name="actionEditer_les_fichiers_ouverts">
@@ -136,6 +137,11 @@
   <action name="actionOpen_des_fichiers">
    <property name="text">
     <string>Tout ouvrir</string>
+   </property>
+  </action>
+  <action name="actionNew_File">
+   <property name="text">
+    <string>New File</string>
    </property>
   </action>
  </widget>

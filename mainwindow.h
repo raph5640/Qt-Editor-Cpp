@@ -56,5 +56,6 @@ private slots:
     void updateFichierRecent();
     void ouvrirFichierRecent();
     void ouvrirToutFichierRecent();
+    void newfile();
 };
 #endif // MAINWINDOW_H
