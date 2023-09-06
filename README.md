@@ -17,4 +17,6 @@ Ctrl+R : Remplacement de texte dans l'editeur de texte courant
 ## Menu Fichier
 ![EditorC-2](https://github.com/raph5640/QtProjectCpp/assets/140059828/440d7b82-a553-4911-bb5d-0ee3b528f727)
 
+## Crédit
+![Credit](https://github.com/raph5640/QtProjectCpp/assets/140059828/79da63f6-c9a3-4f8f-beed-7f5202d84bdd)
 
