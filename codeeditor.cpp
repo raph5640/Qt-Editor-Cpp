@@ -7,8 +7,7 @@
  *
  * @param parent Le widget parent.
  */
-CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
-{
+CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent){
     lineNumberArea = new LineNumberArea(this);
     connect(this, &CodeEditor::updateRequest, this, &CodeEditor::updateLineNumberArea);
     setViewportMargins(FIXED_LINE_NUMBER_WIDTH, 0, 0, 0);
@@ -21,8 +20,7 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
  * @param rect La zone de l'éditeur qui nécessite une mise à jour.
  * @param dy Le décalage vertical en pixels du contenu.
  */
-void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
-{
+void CodeEditor::updateLineNumberArea(const QRect &rect, int dy){
     if (dy)
         lineNumberArea->scroll(0, dy);
     else
@@ -35,8 +33,7 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
  *
  * @param e L'événement de redimensionnement.
  */
-void CodeEditor::resizeEvent(QResizeEvent *e)
-{
+void CodeEditor::resizeEvent(QResizeEvent *e){
     QPlainTextEdit::resizeEvent(e);
     QRect cr = contentsRect();
     lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), FIXED_LINE_NUMBER_WIDTH, cr.height()));
@@ -48,8 +45,7 @@ void CodeEditor::resizeEvent(QResizeEvent *e)
  *
  * @param event L'événement de peinture.
  */
-void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
-{
+void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event){
     QPainter painter(lineNumberArea);
     painter.fillRect(event->rect(), Qt::lightGray);
 

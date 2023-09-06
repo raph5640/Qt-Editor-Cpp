@@ -12,8 +12,7 @@
  *
  * @param parent Le widget parent.
  */
-class CodeEditor : public QPlainTextEdit
-{
+class CodeEditor : public QPlainTextEdit{
     Q_OBJECT
 public:
     CodeEditor(QWidget *parent = nullptr);
