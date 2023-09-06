@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QSettings>
+#include "creditboxdialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -53,7 +54,6 @@ void MainWindow::init_Connections(){
     connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);           //Connection pour la sauvegarde de fichier
     connect(ui->actionChercher_du_texte, &QAction::triggered, this, &MainWindow::chercherText);                 //Connection pour recherche du text dans l'editeur (Ctrl+F)
     connect(ui->action_Remplacer, &QAction::triggered, this,&MainWindow::remplacerText);
-    connect(ui->menuMon_Espace, &QMenu::aboutToShow, this, &MainWindow::editerFichierMenu);
     //J'initialise toutes les actions correspondant a chacun des fichiers recents afin de pouvoir les ouvrir via le menu
     for (QAction *action : recentFileActs) {
         connect(action, &QAction::triggered, this, &MainWindow::ouvrirFichierRecent);
@@ -137,7 +137,8 @@ void MainWindow::enregistrer_sous(){
  */
 void MainWindow::creditFichierMenu(){
     qDebug()<<"Crédit fichier menu";
-    ui->stackedWidget->setCurrentIndex(1);
+    CreditBoxDialog box_credit_dialog(this);
+    box_credit_dialog.exec();
 }
 /*!
  * \brief Passe en mode édition pour les fichiers ouverts.
