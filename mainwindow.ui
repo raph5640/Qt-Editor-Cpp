@@ -84,6 +84,7 @@
     <addaction name="menuFichiers_recent"/>
     <addaction name="separator"/>
     <addaction name="actionSauvegarder"/>
+    <addaction name="actionEnregistrer_sous"/>
     <addaction name="actionChercher_du_texte"/>
     <addaction name="action_Remplacer"/>
     <addaction name="separator"/>
@@ -121,7 +122,7 @@
   </action>
   <action name="actionSauvegarder">
    <property name="text">
-    <string>Sauvegarder</string>
+    <string>Enregistrer</string>
    </property>
   </action>
   <action name="actionChercher_du_texte">
@@ -142,6 +143,11 @@
   <action name="actionNew_File">
    <property name="text">
     <string>New File</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer_sous">
+   <property name="text">
+    <string>Enregistrer sous</string>
    </property>
   </action>
  </widget>

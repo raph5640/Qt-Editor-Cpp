@@ -17,11 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     editor_settings = new QSettings("Organisation", "EditorC++", this);
     init_Connections();
     init_shortcut();
+    init_Enables();
     ui->stackedWidget->setCurrentIndex(0);
-
-    ui->actionChercher_du_texte->setEnabled(false);
-    ui->action_Remplacer->setEnabled(false);
-    ui->actionSauvegarder->setEnabled(false);
 
     for (int i = 0; i < MaxRecentFiles; ++i) {
         QAction *action = new QAction(this);
@@ -38,6 +35,13 @@ MainWindow::~MainWindow()
     delete editor_settings;
     delete ui;
 }
+void MainWindow::init_Enables(bool b){
+    ui->actionChercher_du_texte->setEnabled(b);
+    ui->action_Remplacer->setEnabled(b);
+    ui->actionSauvegarder->setEnabled(b);
+    ui->actionEnregistrer_sous->setEnabled(b);
+}
+
 /*!
  * \brief Initialise les connexions pour les actions de l'interface.
  */
@@ -56,6 +60,7 @@ void MainWindow::init_Connections(){
     }
     connect(ui->actionOpen_des_fichiers, &QAction::triggered, this, &MainWindow::ouvrirToutFichierRecent);
     connect(ui->actionNew_File, &QAction::triggered, this, &MainWindow::newfile);
+    connect(ui->actionEnregistrer_sous, &QAction::triggered, this, &MainWindow::enregistrer_sous);
 }
 /*!
  * \brief Initialise les raccourcis pour les actions de l'interface.
@@ -101,9 +106,7 @@ void MainWindow::ouvrirFichierMenu(){
             ui->tabWidgetFichier->addTab(editor, QFileInfo(nom_fichier).fileName());
             ui->tabWidgetFichier->setTabsClosable(true);
             //Activer les actions "Chercher" et "Remplacer"
-            ui->actionChercher_du_texte->setEnabled(true);
-            ui->action_Remplacer->setEnabled(true);
-            ui->actionSauvegarder->setEnabled(true);
+            init_Enables(true);
         }
         else{
             qDebug()<<"Erreur d'ouverture du fichier";
@@ -124,6 +127,10 @@ void MainWindow::ouvrirFichierMenu(){
  */
 void MainWindow::sauvegarderFichierActuel(){
     sauvegarde_fichier(ui->tabWidgetFichier->currentIndex());
+}
+
+void MainWindow::enregistrer_sous(){
+    sauvegarder_sous(ui->tabWidgetFichier->currentIndex());
 }
 /*!
  * \brief Affiche les crédits de l'application.
@@ -149,24 +156,62 @@ void MainWindow::sauvegarde_fichier(int index) {
     if (index >= 0 && index < liste_fichier_ouvert.size()) {
         QFile *fichier = liste_fichier_ouvert.at(index);
         QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->widget(index));
-        if (editor && fichier->open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QTextStream out(fichier);
-            out << editor->toPlainText();
-            fichier->close();
+        if(fichier->exists()){
+            if (editor && fichier->open(QIODevice::WriteOnly | QIODevice::Text)) {
+                QTextStream out(fichier);
+                out << editor->toPlainText();
+                fichier->close();
 
-            // Supprimer le marqueur de modification (*)
-            QString tabName = ui->tabWidgetFichier->tabText(index);
-            if(tabName.endsWith("*")) {
-                tabName.chop(1);
-                ui->tabWidgetFichier->setTabText(index, tabName);
+                // Supprimer le marqueur de modification (*)
+                QString tabName = ui->tabWidgetFichier->tabText(index);
+                if(tabName.endsWith("*")) {
+                    tabName.chop(1);
+                    ui->tabWidgetFichier->setTabText(index, tabName);
+                }
+                QMessageBox::information(this, tr("Succés"), tr("Sauvegarde du fichier %1 reussi avec succés.").arg(tabName));
+            } else {
+                QMessageBox::warning(this, tr("Erreur"), tr("Impossible de sauvegarder le fichier."));
             }
-            QMessageBox::information(this, tr("Succés"), tr("Sauvegarde du fichier %1 reussi avec succés.").arg(tabName));
-        } else {
-            QMessageBox::warning(this, tr("Erreur"), tr("Impossible de sauvegarder le fichier."));
+        }else{
+            this->sauvegarder_sous(index);
         }
     }
 }
+/*!
+ * \brief Sauvegarde sous le fichier contenu à l'index donné.
+ * \param index L'index du fichier à sauvegarder.
+ */
+void MainWindow::sauvegarder_sous(int index){
+    QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->widget(index));
+    QString repertoire;
+    QFile *Fichier_courant = liste_fichier_ouvert.at(index);
+    if(Fichier_courant && Fichier_courant->exists()) {
+        repertoire = QFileInfo(*Fichier_courant).absolutePath();
+    }
 
+    QString newFileName = QFileDialog::getSaveFileName(this, tr("Sauvegarder le fichier sous"), repertoire, tr("Tous les fichiers (*)"));
+    if(newFileName.isEmpty()) {
+        return;
+    }
+
+    QFile newFile(newFileName);
+    if(newFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&newFile);
+        out << editor->toPlainText();
+        newFile.close();
+
+        //On Supprime le vieux fichier de la liste des fichiers ouvert et on ajoute le nouveau
+        delete liste_fichier_ouvert.takeAt(index);
+        liste_fichier_ouvert.insert(index, new QFile(newFileName));
+
+        //Mise à jour de l'onglet pour afficher le nouveau nom de fichier
+        ui->tabWidgetFichier->setTabText(index, QFileInfo(newFileName).fileName());
+        QMessageBox::information(this, tr("Succés"), tr("Le fichier a été sauvegardé avec succès sous: %1").arg(newFileName));
+    } else {
+        QMessageBox::warning(this, tr("Erreur"), tr("Impossible de sauvegarder le fichier sous: %1").arg(newFileName));
+    }
+
+}
 /*!
  * \brief Ferme l'onglet. Si le fichier est en cours de modification, propose de sauvegarder ou de revenir en arrière.
  * \param index L'index de l'onglet à fermer.
@@ -184,7 +229,11 @@ void MainWindow::close_onglet(int index){
             return;
         }
     }
+
     ui->tabWidgetFichier->removeTab(index);
+    if(ui->tabWidgetFichier->count()==0){
+        init_Enables(false);
+    }
     delete liste_fichier_ouvert.takeAt(index);
     delete widget;  // Libération de la mémoire
 }
@@ -309,9 +358,7 @@ void MainWindow::ajouterFichierMenuText(const QString &fileName) {
         ui->tabWidgetFichier->setTabsClosable(true);
 
         // Activer les actions "Chercher" et "Remplacer"
-        ui->actionChercher_du_texte->setEnabled(true);
-        ui->action_Remplacer->setEnabled(true);
-        ui->actionSauvegarder->setEnabled(true);
+        init_Enables(true);
     } else {
         qDebug() << "Erreur d'ouverture du fichier";
     }
@@ -344,9 +391,7 @@ void MainWindow::newfile(){
     ui->tabWidgetFichier->setTabsClosable(true);
 
     // Activer les actions "Chercher" et "Remplacer"
-    ui->actionChercher_du_texte->setEnabled(true);
-    ui->action_Remplacer->setEnabled(true);
-    ui->actionSauvegarder->setEnabled(true);
+    init_Enables(true);
 
     // Ajouter un fichier vide à la liste des fichiers ouverts
     QFile *fichier = new QFile();

@@ -41,8 +41,10 @@ private:
     //Quelques methodes
     void init_Connections();
     void init_shortcut();
+    void init_Enables(bool b=false);
     void close_onglet(int index);
     void sauvegarde_fichier(int index);
+    void sauvegarder_sous(int index);
 
 private slots:
     void ouvrirFichierMenu();
@@ -57,5 +59,6 @@ private slots:
     void ouvrirFichierRecent();
     void ouvrirToutFichierRecent();
     void newfile();
+    void enregistrer_sous();
 };
 #endif // MAINWINDOW_H
