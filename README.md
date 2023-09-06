@@ -8,9 +8,9 @@ Ctrl+A : Ajouter un nouveau fichier a l'espace de travail
 
 Ctrl+S : Sauvegarder le fichier en cours de modification
 
-Ctrl+F : Chercher du texte dans l'editeur de texte courant
+Ctrl+F : Ouvre une boite de dialogue permettant la recherche de texte dans l'editeur de texte courant ainsi qu'un eventuelle Remplacement du texte dans l'editeur de texte courant
 
-Ctrl+R : Remplacement de texte dans l'editeur de texte courant
+Ctrl+R : 
 ## Fenetre principale
 ![EditorC- (3)](https://github.com/raph5640/QtProjectCpp/assets/140059828/a5d2c922-abc6-43cc-9d57-c8e6f8974f27)
 
