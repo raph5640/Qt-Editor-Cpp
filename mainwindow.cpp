@@ -4,12 +4,12 @@
 #include <QDebug>
 #include <QString>
 #include <QFileDialog>
-#include <QPlainTextEdit>
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QSettings>
 #include "creditboxdialog.h"
 #include <QPushButton>
+#include "codeeditor.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -92,23 +92,23 @@ void MainWindow::ouvrirFichierMenu(){
             this->liste_fichier_ouvert.append(fichier);
             fichier->close();
 
-            QPlainTextEdit *editor = new QPlainTextEdit;
+            CodeEditor *editor = new CodeEditor;
             //ICI J'ECRIS UNE FONDCTION LAMBDA QUI CAPTURE LES VARIABLES this, editor POUR VERIFIER QUE LE FICHIER EST MODIFIER OU NON ET ECRIRE * DANS LE STACK WIDGET
-            connect(editor, &QPlainTextEdit::textChanged, this, [this, editor,contenu_fichier](){
+            connect(editor, &CodeEditor::textChanged, this, [this, editor,contenu_fichier](){
                 int index = ui->tabWidgetFichier->indexOf(editor);
-                if(editor->toPlainText() == contenu_fichier){  //Si le contenu du QPlainTextEdit est egale au contenu du fichier alors on supprime *
+                if(editor->toPlainText() == contenu_fichier){  //Si le contenu du CodeEditor est egale au contenu du fichier alors on supprime *
                     QString onglet_text = ui->tabWidgetFichier->tabText(index);
                     if(onglet_text.endsWith("*")){
                         onglet_text.chop(1); //Supprime le dernier caractere ici en l'occurence le dernier caractere c'est toujours l'étoile
                         ui->tabWidgetFichier->setTabText(index,onglet_text);
                     }
-                }else{ //Si le contenu du QPlainTextEdit est différent du contenu du fichier alors on ajoute *
+                }else{ //Si le contenu du CodeEditor est différent du contenu du fichier alors on ajoute *
                     if(ui->tabWidgetFichier->tabText(index).endsWith("*")==false){
                         ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index)+"*");
                     }
                 }
             });
-            connect(editor, &QPlainTextEdit::cursorPositionChanged,this,&MainWindow::updateCursor);
+            connect(editor, &CodeEditor::cursorPositionChanged,this,&MainWindow::updateCursor);
             editor->setPlainText(contenu_fichier);
             ui->tabWidgetFichier->addTab(editor, QFileInfo(nom_fichier).fileName());
             ui->tabWidgetFichier->setTabsClosable(true);
@@ -163,7 +163,7 @@ void MainWindow::sauvegarde_fichier(int index) {
     qDebug()<<"Vous faites une sauvegarde du fichier en cours de modifications";
     if (index >= 0 && index < liste_fichier_ouvert.size()) {
         QFile *fichier = liste_fichier_ouvert.at(index);
-        QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->widget(index));
+        CodeEditor *editor = qobject_cast<CodeEditor*>(ui->tabWidgetFichier->widget(index));
         if(fichier->exists()){
             if (editor && fichier->open(QIODevice::WriteOnly | QIODevice::Text)) {
                 QTextStream out(fichier);
@@ -190,7 +190,7 @@ void MainWindow::sauvegarde_fichier(int index) {
  * \param index L'index du fichier à sauvegarder.
  */
 void MainWindow::sauvegarder_sous(int index){
-    QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->widget(index));
+    CodeEditor *editor = qobject_cast<CodeEditor*>(ui->tabWidgetFichier->widget(index));
     QString repertoire;
     QFile *Fichier_courant = liste_fichier_ouvert.at(index);
     if(Fichier_courant && Fichier_courant->exists()) {
@@ -249,7 +249,7 @@ void MainWindow::close_onglet(int index){
  * \brief Met à jour l'affichage de la position du curseur dans la barre de statut.
  */
 void MainWindow::updateCursor(){
-    QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
+    CodeEditor *editor = qobject_cast<CodeEditor*>(ui->tabWidgetFichier->currentWidget());
     if(editor){
         QTextCursor cursor = editor->textCursor();
         int ligne = cursor.blockNumber() +1;
@@ -262,7 +262,7 @@ void MainWindow::updateCursor(){
  * \brief Lance une recherche de texte dans l'éditeur. Remplace un texte donné par un autre dans l'éditeur.
  */
 void MainWindow::recherche_remplacerText() {
-    QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
+    CodeEditor *editor = qobject_cast<CodeEditor*>(ui->tabWidgetFichier->currentWidget());
     if (!editor) {
         return;
     }
@@ -370,23 +370,23 @@ void MainWindow::ajouterFichierMenuText(const QString &fileName) {
 
         this->liste_fichier_ouvert.append(fichier);
 
-        QPlainTextEdit *editor = new QPlainTextEdit;
-        connect(editor, &QPlainTextEdit::textChanged, this, [this, editor,contenu_fichier](){
+        CodeEditor *editor = new CodeEditor;
+        connect(editor, &CodeEditor::textChanged, this, [this, editor,contenu_fichier](){
             int index = ui->tabWidgetFichier->indexOf(editor);
-            if(editor->toPlainText() == contenu_fichier){  //Si le contenu du QPlainTextEdit est egale au contenu du fichier alors on supprime *
+            if(editor->toPlainText() == contenu_fichier){  //Si le contenu du CodeEditor est egale au contenu du fichier alors on supprime *
                 QString onglet_text = ui->tabWidgetFichier->tabText(index);
                 if(onglet_text.endsWith("*")){
                     onglet_text.chop(1); //Supprime le dernier caractere ici en l'occurence le dernier caractere c'est toujours l'étoile
                     ui->tabWidgetFichier->setTabText(index,onglet_text);
                 }
-            }else{ //Si le contenu du QPlainTextEdit est différent du contenu du fichier alors on ajoute *
+            }else{ //Si le contenu du CodeEditor est différent du contenu du fichier alors on ajoute *
                 if(ui->tabWidgetFichier->tabText(index).endsWith("*")==false){
                     ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index)+"*");
                 }
             }
         });
 
-        connect(editor, &QPlainTextEdit::cursorPositionChanged, this, &MainWindow::updateCursor);
+        connect(editor, &CodeEditor::cursorPositionChanged, this, &MainWindow::updateCursor);
         editor->setPlainText(contenu_fichier);
         ui->tabWidgetFichier->addTab(editor, QFileInfo(fileName).fileName());
         ui->tabWidgetFichier->setTabsClosable(true);
@@ -412,14 +412,14 @@ void MainWindow::ouvrirToutFichierRecent() {
 void MainWindow::newfile(){
     qDebug()<<"Création d'un nouvel onglet pour un nouveau fichier";
 
-    QPlainTextEdit *editor = new QPlainTextEdit;
-    connect(editor, &QPlainTextEdit::textChanged, this, [this, editor](){
+    CodeEditor *editor = new CodeEditor;
+    connect(editor, &CodeEditor::textChanged, this, [this, editor](){
         int index = ui->tabWidgetFichier->indexOf(editor);
         if(ui->tabWidgetFichier->tabText(index).endsWith("*")==false){
             ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index) + "*");
         }
     });
-    connect(editor, &QPlainTextEdit::cursorPositionChanged,this,&MainWindow::updateCursor);
+    connect(editor, &CodeEditor::cursorPositionChanged,this,&MainWindow::updateCursor);
 
     ui->tabWidgetFichier->addTab(editor, tr("NEW :)"));
     ui->tabWidgetFichier->setTabsClosable(true);

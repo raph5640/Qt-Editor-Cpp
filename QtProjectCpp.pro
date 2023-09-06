@@ -11,12 +11,16 @@ GIT_VERSION = $$system(git rev-parse HEAD)
 DEFINES += GIT_VERSION=\\\"$$GIT_VERSION\\\"
 
 SOURCES += \
+    codeeditor.cpp \
     creditboxdialog.cpp \
+    linenumberarea.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    codeeditor.h \
     creditboxdialog.h \
+    linenumberarea.h \
     mainwindow.h
 
 FORMS += \
