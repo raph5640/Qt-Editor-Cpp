@@ -53,8 +53,7 @@ private slots:
     void editerFichierMenu();
     void sauvegarderFichierActuel();
     void updateCursor();
-    void chercherText();
-    void remplacerText();
+    void recherche_remplacerText();
     void updateFichierRecent();
     void ouvrirFichierRecent();
     void ouvrirToutFichierRecent();

@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include <QSettings>
 #include "creditboxdialog.h"
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -52,8 +53,7 @@ void MainWindow::init_Connections(){
     connect(ui->tabWidgetFichier, &QTabWidget::tabCloseRequested, this, &MainWindow::close_onglet);             //Connection la croix de fermeture "x" avec le slot close_onglet
     connect(ui->actionEditer_les_fichiers_ouverts, &QAction::triggered, this, &MainWindow::editerFichierMenu);  //Connection permettant de revenir a l'espace de travail
     connect(ui->actionSauvegarder, &QAction::triggered, this, &MainWindow::sauvegarderFichierActuel);           //Connection pour la sauvegarde de fichier
-    connect(ui->actionChercher_du_texte, &QAction::triggered, this, &MainWindow::chercherText);                 //Connection pour recherche du text dans l'editeur (Ctrl+F)
-    connect(ui->action_Remplacer, &QAction::triggered, this,&MainWindow::remplacerText);
+    connect(ui->action_Remplacer, &QAction::triggered, this,&MainWindow::recherche_remplacerText);                        //Connection pour recherche du text dans l'editeur (Ctrl+F)
     //J'initialise toutes les actions correspondant a chacun des fichiers recents afin de pouvoir les ouvrir via le menu
     for (QAction *action : recentFileActs) {
         connect(action, &QAction::triggered, this, &MainWindow::ouvrirFichierRecent);
@@ -68,8 +68,7 @@ void MainWindow::init_Connections(){
 void MainWindow::init_shortcut(){
     ui->actionSauvegarder->setShortcut(QKeySequence("Ctrl+S"));
     ui->actionAjouter_fichier_txt->setShortcut(QKeySequence("Ctrl+A"));
-    ui->actionChercher_du_texte->setShortcut(QKeySequence("Ctrl+F"));
-    ui->action_Remplacer->setShortcut(QKeySequence("Ctrl+R"));
+    ui->action_Remplacer->setShortcut(QKeySequence("Ctrl+F"));
 }
 /*!
  * \brief Ajoute un nouveau fichier à l'espace de travail en ouvrant le répertoire.
@@ -258,58 +257,76 @@ void MainWindow::updateCursor(){
         ui->statusbar->showMessage(tr("Ligne : %1     Colonne : %2").arg(ligne).arg(colonne));
     }
 }
+
 /*!
- * \brief Lance une recherche de texte dans l'éditeur.
+ * \brief Lance une recherche de texte dans l'éditeur. Remplace un texte donné par un autre dans l'éditeur.
  */
-void MainWindow::chercherText(){
-    qDebug()<<"Vous faites une recherche de text dans votre editeur";
+void MainWindow::recherche_remplacerText() {
     QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
-    editor->moveCursor(QTextCursor::Start);
-    if(!editor) {
+    if (!editor) {
         return;
     }
-    qDebug() << editor->toPlainText();
-    QString text = QInputDialog::getText(this, tr("Recherche"), tr("Entrez le texte à rechercher:"));
-    if(text.isEmpty()) {
-        return;
-    }
-    QTextCursor found = editor->document()->find(text, editor->textCursor(), QTextDocument::FindWholeWords);
-    if(found.isNull()) {
-        QMessageBox::warning(this, tr("Recherche"), tr("Votre texte %1 n'a pas été trouvé").arg(text));
-    } else {
-        editor->setTextCursor(found);
-    }
+    editor->moveCursor(QTextCursor::Start); //Je met le curseur au debut pour la recherche sinon il va commencer la recherche la ou le curseur se situe
+
+    QDialog dialog(this); //Mon objet boite de dialogue
+    dialog.setWindowTitle("Rechercher et Remplacer");
+
+    QGridLayout layout;
+    dialog.setLayout(&layout);
+    //Creation de quelques label line dit pour entrer les texte a modifier et a rechercher
+    QLabel rechercheLabel("Chercher:");
+    QLineEdit rechercheLineEdit;
+    QLabel replaceLabel("Remplacer par:");
+    QLineEdit replaceLineEdit;
+    //Creation des objets pour mes boutons
+    QPushButton rechercheNextBtn("Recherche Suivant");
+    QPushButton recherchePrevBtn("Recherche Précédent");
+    QPushButton replaceBtn("Remplacer");
+    QPushButton replaceAllBtn("Remplacer tout");
+    QPushButton closeBtn("Fermer");
+    //Ajout de mes widget crée a mon layout de ma QDialog
+    layout.addWidget(&rechercheLabel, 0, 0);
+    layout.addWidget(&rechercheLineEdit, 0, 1, 1, 3);
+    layout.addWidget(&replaceLabel, 1, 0);
+    layout.addWidget(&replaceLineEdit, 1, 1, 1, 3);
+    layout.addWidget(&rechercheNextBtn, 2, 0);
+    layout.addWidget(&recherchePrevBtn, 3, 0);
+    layout.addWidget(&replaceBtn, 2, 2 , 1 ,1);
+    layout.addWidget(&replaceAllBtn, 3, 2, 1, 1);
+    layout.addWidget(&closeBtn, 3, 4);
+
+    QTextDocument::FindFlags drapeau = QTextDocument::FindCaseSensitively;
+    //Mes connections pour chacun de mes boutons ici j'utilise des fonctions lambda qui capture [&] toutes les references des variables locale a cette fonction (tres pratique)
+    connect(&rechercheNextBtn, &QPushButton::clicked, [&]() {
+        editor->find(rechercheLineEdit.text(), drapeau);
+    });
+
+    connect(&recherchePrevBtn, &QPushButton::clicked, [&]() {
+        editor->find(rechercheLineEdit.text(), drapeau | QTextDocument::FindBackward);
+    });
+
+    connect(&replaceBtn, &QPushButton::clicked, [&]() {
+        if (editor->textCursor().hasSelection()) {
+            editor->textCursor().insertText(replaceLineEdit.text());
+        }
+        editor->find(rechercheLineEdit.text(), drapeau);
+    });
+
+    connect(&replaceAllBtn, &QPushButton::clicked, [&]() {
+        editor->moveCursor(QTextCursor::Start);
+        QTextCursor currentCursor = editor->textCursor();
+        QTextCursor found = editor->document()->find(rechercheLineEdit.text(), currentCursor, drapeau);
+        while (!found.isNull()) {
+            found.insertText(replaceLineEdit.text());
+            found = editor->document()->find(rechercheLineEdit.text(), found, drapeau);
+        }
+    });
+
+    connect(&closeBtn, &QPushButton::clicked, &dialog, &QDialog::accept);
+
+    dialog.exec();
 }
-/*!
- * \brief Remplace un texte donné par un autre dans l'éditeur.
- */
-void MainWindow::remplacerText(){
-    QPlainTextEdit *editor = qobject_cast<QPlainTextEdit*>(ui->tabWidgetFichier->currentWidget());
-    editor->moveCursor(QTextCursor::Start);
-    if(!editor) {
-        return;
-    }
-    //Les boites de dialogues
-    QString rechercheText = QInputDialog::getText(this, tr("Recherche"), tr("Texte à chercher "));
-    QString replaceText = QInputDialog::getText(this, tr("Remplacement"), tr("Remplacer %1 par ").arg(rechercheText));
 
-    //On vérifie que l'on a bien rentré du texte dans les deux boîtes de dialogues
-    if(rechercheText.isEmpty() || replaceText.isEmpty()) {
-        return;
-    }
-    //Effectuer une recherche tout en respectant la casse
-    QTextDocument::FindFlags drapeau;
-    drapeau = drapeau | QTextDocument::FindCaseSensitively;
-
-    QTextCursor currentCursor = editor->textCursor();
-
-    //Cherche la première occurrence
-    QTextCursor found = editor->document()->find(rechercheText, currentCursor, drapeau);
-    while(!found.isNull()) {
-        found.insertText(replaceText);
-        found = editor->document()->find(rechercheText, found, drapeau);
-    }
-}
 
 
 void MainWindow::updateFichierRecent() {

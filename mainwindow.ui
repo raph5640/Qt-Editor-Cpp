@@ -85,7 +85,6 @@
     <addaction name="separator"/>
     <addaction name="actionSauvegarder"/>
     <addaction name="actionEnregistrer_sous"/>
-    <addaction name="actionChercher_du_texte"/>
     <addaction name="action_Remplacer"/>
     <addaction name="separator"/>
     <addaction name="actionEditer_les_fichiers_ouverts"/>
@@ -126,7 +125,7 @@
   </action>
   <action name="action_Remplacer">
    <property name="text">
-    <string>Remplacer</string>
+    <string>Recherche et Remplace</string>
    </property>
   </action>
   <action name="actionOpen_des_fichiers">
