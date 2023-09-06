@@ -95,10 +95,18 @@ void MainWindow::ouvrirFichierMenu(){
 
             QPlainTextEdit *editor = new QPlainTextEdit;
             //ICI J'ECRIS UNE FONDCTION LAMBDA QUI CAPTURE LES VARIABLES this, editor POUR VERIFIER QUE LE FICHIER EST MODIFIER OU NON ET ECRIRE * DANS LE STACK WIDGET
-            connect(editor, &QPlainTextEdit::textChanged, this, [this, editor](){
+            connect(editor, &QPlainTextEdit::textChanged, this, [this, editor,contenu_fichier](){
                 int index = ui->tabWidgetFichier->indexOf(editor);
-                if(ui->tabWidgetFichier->tabText(index).endsWith("*")==false){
-                    ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index) + "*");
+                if(editor->toPlainText() == contenu_fichier){  //Si le contenu du QPlainTextEdit est egale au contenu du fichier alors on supprime *
+                    QString onglet_text = ui->tabWidgetFichier->tabText(index);
+                    if(onglet_text.endsWith("*")){
+                        onglet_text.chop(1); //Supprime le dernier caractere ici en l'occurence le dernier caractere c'est toujours l'étoile
+                        ui->tabWidgetFichier->setTabText(index,onglet_text);
+                    }
+                }else{ //Si le contenu du QPlainTextEdit est différent du contenu du fichier alors on ajoute *
+                    if(ui->tabWidgetFichier->tabText(index).endsWith("*")==false){
+                        ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index)+"*");
+                    }
                 }
             });
             connect(editor, &QPlainTextEdit::cursorPositionChanged,this,&MainWindow::updateCursor);
@@ -346,10 +354,18 @@ void MainWindow::ajouterFichierMenuText(const QString &fileName) {
         this->liste_fichier_ouvert.append(fichier);
 
         QPlainTextEdit *editor = new QPlainTextEdit;
-        connect(editor, &QPlainTextEdit::textChanged, this, [this, editor]() {
+        connect(editor, &QPlainTextEdit::textChanged, this, [this, editor,contenu_fichier](){
             int index = ui->tabWidgetFichier->indexOf(editor);
-            if (!ui->tabWidgetFichier->tabText(index).endsWith("*")) {
-                ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index) + "*");
+            if(editor->toPlainText() == contenu_fichier){  //Si le contenu du QPlainTextEdit est egale au contenu du fichier alors on supprime *
+                QString onglet_text = ui->tabWidgetFichier->tabText(index);
+                if(onglet_text.endsWith("*")){
+                    onglet_text.chop(1); //Supprime le dernier caractere ici en l'occurence le dernier caractere c'est toujours l'étoile
+                    ui->tabWidgetFichier->setTabText(index,onglet_text);
+                }
+            }else{ //Si le contenu du QPlainTextEdit est différent du contenu du fichier alors on ajoute *
+                if(ui->tabWidgetFichier->tabText(index).endsWith("*")==false){
+                    ui->tabWidgetFichier->setTabText(index, ui->tabWidgetFichier->tabText(index)+"*");
+                }
             }
         });
 
