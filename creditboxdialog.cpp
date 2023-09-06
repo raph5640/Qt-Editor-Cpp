@@ -12,8 +12,8 @@ CreditBoxDialog::CreditBoxDialog(QWidget *parent) :
     ui->labelPhoto->setPixmap(scaledPixmap);
     //GITHUB
     QString gitSHA1 = QString("Version : %1").arg(GIT_VERSION);
-    QString compileDate = QString("Date : %1").arg(__DATE__);
-    QString compileTime = QString("Time : %1").arg(__TIME__);
+    QString compileDate = QString("Date dernier commit : %1").arg(__DATE__);
+    QString compileTime = QString("Heure du dernier commit : %1").arg(__TIME__);
 
     ui->labelgithub->setText("git hub : <a href=\"https://github.com/raph5640/QtProjectCpp.git\">GitHub</a>");
     ui->labelgithub->setOpenExternalLinks(true);

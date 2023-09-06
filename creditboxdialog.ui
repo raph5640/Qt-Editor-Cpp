@@ -36,16 +36,16 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="labelCompileTime">
+    <widget class="QLabel" name="labelCompileDate">
      <property name="text">
-      <string>Time : </string>
+      <string>Date : </string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="labelCompileDate">
+    <widget class="QLabel" name="labelCompileTime">
      <property name="text">
-      <string>Date : </string>
+      <string>Time : </string>
      </property>
     </widget>
    </item>
