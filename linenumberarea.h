@@ -16,14 +16,14 @@ class LineNumberArea : public QWidget
     Q_OBJECT
 public:
     explicit LineNumberArea(CodeEditor *editor);
-
     QSize sizeHint() const override;
-
+    void setShowLineNumbers(bool show);
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
     CodeEditor *codeEditor;
+    bool show_Line_Number;
 };
 
 #endif // LINENUMBERAREA_H

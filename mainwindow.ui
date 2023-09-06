@@ -45,6 +45,13 @@
      </widget>
     </item>
     <item>
+     <widget class="QCheckBox" name="checkBoxLineNumber">
+      <property name="text">
+       <string>Afficher le numéro des lignes</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QLabel" name="label_editorcpp">
       <property name="text">
        <string>                                                                                                                                                                                                                                                                                     Editor C++ (by Raphael De Oliveira)</string>
