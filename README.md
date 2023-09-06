@@ -1,4 +1,4 @@
-# QtProjectCpp
+# QtProjectCpp (Editor)
 C++ editor with Qt5
 Author : @raph5640 Raphael De Oliveira
 
