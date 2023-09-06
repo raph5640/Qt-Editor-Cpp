@@ -17,7 +17,7 @@ class CodeEditor : public QPlainTextEdit{
 public:
     CodeEditor(QWidget *parent = nullptr);
     void lineNumberAreaPaintEvent(QPaintEvent *event);
-    int getFixedLineNumberWidth() const { return FIXED_LINE_NUMBER_WIDTH; }
+    int getFixedLineNumberWidth() const { return largeur; }
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -26,7 +26,7 @@ private slots:
     void updateLineNumberArea(const QRect &, int dy);
 
 private:
-    const int FIXED_LINE_NUMBER_WIDTH = 50;
+    const int largeur = 50;
     QWidget *lineNumberArea;
 };
 

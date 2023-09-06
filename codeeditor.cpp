@@ -10,7 +10,7 @@
 CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent){
     lineNumberArea = new LineNumberArea(this);
     connect(this, &CodeEditor::updateRequest, this, &CodeEditor::updateLineNumberArea);
-    setViewportMargins(FIXED_LINE_NUMBER_WIDTH, 0, 0, 0);
+    setViewportMargins(largeur, 0, 0, 0);
 }
 /**
  * @brief Met à jour la zone de numérotation des lignes lors des changements ou des défilements.
@@ -36,7 +36,7 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy){
 void CodeEditor::resizeEvent(QResizeEvent *e){
     QPlainTextEdit::resizeEvent(e);
     QRect cr = contentsRect();
-    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), FIXED_LINE_NUMBER_WIDTH, cr.height()));
+    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), largeur, cr.height()));
 }
 /**
  * @brief Dessine les numéros de ligne dans la zone de numérotation des lignes.
