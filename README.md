@@ -11,7 +11,8 @@ Ctrl+S : Sauvegarder le fichier en cours de modification
 Ctrl+F : Ouvre une boite de dialogue permettant la recherche de texte dans l'editeur de texte courant ainsi qu'un eventuelle Remplacement du texte dans l'editeur de texte courant
 
 ## Fenetre principale
-![EditorC- (3)](https://github.com/raph5640/QtProjectCpp/assets/140059828/a5d2c922-abc6-43cc-9d57-c8e6f8974f27)
+![EditorC- (4)](https://github.com/raph5640/QtProjectCpp/assets/140059828/0dbc43a0-255d-41d7-a4c3-05419d0e7750)
+
 
 ## Menu Fichier
 ![EditorC-2 (2)](https://github.com/raph5640/QtProjectCpp/assets/140059828/cb73df27-67e4-42dd-b5dd-0b3f985d396f)
