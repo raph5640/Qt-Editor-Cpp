@@ -20,9 +20,15 @@ CreditBoxDialog::CreditBoxDialog(QWidget *parent) :
     ui->labelSHA1->setText(gitSHA1);
     ui->labelCompileDate->setText(compileDate);
     ui->labelCompileTime->setText(compileTime);
+
+    connect(ui->pushButtonFermer,&QPushButton::clicked, this, &CreditBoxDialog::fermer_box);
 }
 
 CreditBoxDialog::~CreditBoxDialog()
 {
     delete ui;
+}
+
+void CreditBoxDialog::fermer_box(){
+    this->close();
 }

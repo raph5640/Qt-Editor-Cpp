@@ -66,6 +66,8 @@
     <property name="title">
      <string>&amp;Edition</string>
     </property>
+    <addaction name="action_Remplacer"/>
+    <addaction name="separator"/>
     <addaction name="actionCredit_de_fichier_txt"/>
    </widget>
    <widget class="QMenu" name="menuLecture">
@@ -85,7 +87,6 @@
     <addaction name="separator"/>
     <addaction name="actionSauvegarder"/>
     <addaction name="actionEnregistrer_sous"/>
-    <addaction name="action_Remplacer"/>
     <addaction name="separator"/>
     <addaction name="actionEditer_les_fichiers_ouverts"/>
    </widget>

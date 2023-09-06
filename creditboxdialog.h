@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::CreditBoxDialog *ui;
+private slots:
+    void fermer_box();
 };
 
 #endif // CREDITBOXDIALOG_H
