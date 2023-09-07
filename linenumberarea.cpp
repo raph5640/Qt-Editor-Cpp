@@ -9,11 +9,7 @@ QSize LineNumberArea::sizeHint() const {
 }
 
 void LineNumberArea::paintEvent(QPaintEvent *event) {
-    if (show_Line_Number==false) return;
+    if (!codeEditor->isShowingLineNumbers()) return;
     codeEditor->lineNumberAreaPaintEvent(event);
 }
 
-void LineNumberArea::setShowLineNumbers(bool show){
-    this->show_Line_Number = show;
-    update();
-}

@@ -1,4 +1,5 @@
 //Auteur : Raphael De Oliveira
+//Projet Qt fini.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
@@ -29,7 +30,18 @@ MainWindow::MainWindow(QWidget *parent)
         ui->menuFichiers_recent->addAction(action);
         recentFileActs.append(action);
     }
+    ui->checkBoxLineNumber->setChecked(true);
     updateFichierRecent();
+}
+void MainWindow::toggleLineNumberAreaForCurrentEditor(int state) {
+
+    QWidget *currentWidget = ui->tabWidgetFichier->currentWidget();
+    CodeEditor *editor = qobject_cast<CodeEditor*>(currentWidget);
+
+    if(editor) {
+        editor->toggleLineNumberArea(state == Qt::Checked);
+        editor->update();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -42,6 +54,7 @@ void MainWindow::init_Enables(bool b){
     ui->action_Remplacer->setEnabled(b);
     ui->actionSauvegarder->setEnabled(b);
     ui->actionEnregistrer_sous->setEnabled(b);
+
 }
 
 /*!
@@ -61,6 +74,8 @@ void MainWindow::init_Connections(){
     connect(ui->actionOpen_des_fichiers, &QAction::triggered, this, &MainWindow::ouvrirToutFichierRecent);
     connect(ui->actionNew_File, &QAction::triggered, this, &MainWindow::newfile);
     connect(ui->actionEnregistrer_sous, &QAction::triggered, this, &MainWindow::enregistrer_sous);
+    connect(ui->checkBoxLineNumber, &QCheckBox::stateChanged, this, &MainWindow::toggleLineNumberAreaForCurrentEditor);
+
 }
 /*!
  * \brief Initialise les raccourcis pour les actions de l'interface.
@@ -431,3 +446,4 @@ void MainWindow::newfile(){
     QFile *fichier = new QFile();
     liste_fichier_ouvert.append(fichier);
 }
+

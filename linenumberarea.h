@@ -17,7 +17,6 @@ class LineNumberArea : public QWidget
 public:
     explicit LineNumberArea(CodeEditor *editor);
     QSize sizeHint() const override;
-    void setShowLineNumbers(bool show);
 protected:
     void paintEvent(QPaintEvent *event) override;
 

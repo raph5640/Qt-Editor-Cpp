@@ -26,6 +26,8 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy){
     else
         lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
 }
+
+
 /**
  * @brief Gère les événements de redimensionnement pour s'assurer que la zone de numérotation des lignes est correctement dimensionnée et placée.
  *
@@ -67,3 +69,15 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event){
         ++blockNumber;
     }
 }
+
+void CodeEditor::toggleLineNumberArea(bool visible) {
+    lineNumberArea->setVisible(visible);
+    showLineNumbers = visible;
+    if(visible) {
+        setViewportMargins(largeur, 0, 0, 0);
+        lineNumberArea->update();
+    } else {
+        setViewportMargins(0, 0, 0, 0);
+    }
+}
+

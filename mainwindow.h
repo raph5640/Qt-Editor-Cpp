@@ -6,6 +6,7 @@
 #include <QList>
 #include <QFile>
 #include <QSettings>
+#include "codeeditor.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -58,5 +59,6 @@ private slots:
     void ouvrirToutFichierRecent();
     void newfile();
     void enregistrer_sous();
+    void toggleLineNumberAreaForCurrentEditor(int state);
 };
 #endif // MAINWINDOW_H
