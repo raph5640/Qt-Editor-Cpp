@@ -1,7 +1,8 @@
 # QtProjectCpp (Editor)
 C++ editor with Qt5
 
-![text_editor_raphael (2)](https://github.com/raph5640/Qt-Editor-Cpp/assets/140059828/09ca2ef8-b6cb-4d85-9afb-02da6ffc5a17)
+![text_editor_raphael (3)](https://github.com/raph5640/Qt-Editor-Cpp/assets/140059828/a6f2c23e-2971-427d-9c09-77fc0473cbb7)
+
 
 
 
