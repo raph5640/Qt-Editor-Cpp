@@ -1,7 +1,8 @@
 # QtProjectCpp (Editor)
 C++ editor with Qt5
 
-![text_editor_raphael](https://github.com/raph5640/Qt-Editor-Cpp/assets/140059828/bc58bc3e-a067-49bd-9ac9-a23364534608)
+![text_editor_raphael (2)](https://github.com/raph5640/Qt-Editor-Cpp/assets/140059828/09ca2ef8-b6cb-4d85-9afb-02da6ffc5a17)
+
 
 
 Author : @raph5640 Raphael De Oliveira
